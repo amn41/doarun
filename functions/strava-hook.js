@@ -19,8 +19,13 @@ exports.handler = async function(event, context) {
         /* construct the fauna query */
 	const url = STRAVA_API + eventItem.data.object_id;
 	const tokenHeader = 'Bearer ' + process.env.STRAVA_TOKEN;
+	console.log(url)
+	console.log(tokenHeader)
         return fetch(url, {headers : { 'Authorization': tokenHeader }})
-          .then((response) => response.json())
+            .then((response) => {
+		console.log('success', response)
+    	        return response
+	    })
           .then((activity) =>
 	  	{if (eventItem.data.aspect_type === "create") {
 	  	      client.query(q.Create(q.Ref('classes/activities'), activity))
