@@ -78,13 +78,19 @@ export default class App extends Component {
   render() {
     return (
       <div className='app'>
-        <AppHeader />	    
-        <div className='activity-list'>
-          {this.renderActivities()}
+        <AppHeader />
+	<div>
+	  <h1 classname='leaderboard-title'>Recent Activities</h1> 
+          <div className='activity-list'>
+            {this.renderActivities()}
+          </div>
         </div>
-        <div className='leaderboard'>
-          {this.renderLeaderboard()}
-        </div>
+	<div>	    
+	  <h1 classname='leaderboard-title'>Leaderboard</h1>
+          <div className='leaderboard'>
+            {this.renderLeaderboard()}
+          </div>
+        </div>	    
       </div>
     )
   }
