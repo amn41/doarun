@@ -54,3 +54,7 @@ h1 {
     border-color: #fa3b49;
     color: #fff;
 }
+
+.container {
+    display: flex;
+}

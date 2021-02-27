@@ -54,14 +54,14 @@ export default class App extends Component {
   }
   renderLatestActivity() {
     const { latestActivity } = this.state
-
+    const content = (latestActivity.distance / 1000).toString() + " KM"
     if (!latestActivity) {
       // Loading State here
       return null
     }
       return (
       <div>
-        latestActivity.distance
+        {content}
       </div>
       )
   }
@@ -98,16 +98,18 @@ export default class App extends Component {
     return (
       <div className='app'>
         <AppHeader />
-	<div>
-	  <h1 classname='weekly-leaderboard-title'>THIS WEEK</h1> 
-          <div className='leaderboard-list'>
-            {this.renderWeeklyLeaderboard()}
+	<div className='container'>    
+	  <div className="item">
+	    <h1 classname='weekly-leaderboard-title'>THIS WEEK</h1> 
+            <div className='leaderboard-list'>
+              {this.renderWeeklyLeaderboard()}
+            </div>
           </div>
-        </div>
-        <div>
-          <h1 classname='leaderboard-title'>LATEST RUN: BRIAN</h1> 
-          <div className='activity-list'>
-            {this.renderLatestActivity()}
+          <div className="item">
+            <h1 classname='leaderboard-title'>LATEST RUN: BRIAN</h1> 
+            <div className='activity-list'>
+              {this.renderLatestActivity()}
+            </div>
           </div>
         </div>
       </div>
