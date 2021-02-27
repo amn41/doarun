@@ -62,10 +62,11 @@ export default class App extends Component {
       return null
     }
 
-    return weeklyLeaderboard.map((athlete, index) => {
+      return weeklyLeaderboard.map((athlete, index) => {
+       const position = `index.`
        return (
          <tr key={index}>
-            <td>{index}</td>
+            <td><span className="position">{position}</span></td>
             <td>{athlete.name}</td>
             <td>{athlete.distance}</td>
             <td>{athlete.city}</td>
