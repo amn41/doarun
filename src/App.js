@@ -26,10 +26,10 @@ export default class App extends Component {
         activities: activities
       })
     })
-    api.readLeaderboard().then((leaderboard) => {
-      console.log('leaderboard', leaderboard)
+    api.readWeeklyLeaderboard().then((leaderboard) => {
+      console.log('weeklyleaderboard', leaderboard)
       this.setState({
-        leaderboard: leaderboard
+        weeklyLeaderboard: leaderboard
       })
     })
   }
@@ -54,26 +54,6 @@ export default class App extends Component {
       )
     })
   }
-  renderLeaderboard() {
-    const { leaderboard } = this.state
-
-    if (!leaderboard || !leaderboard.length) {
-      // Loading State here
-      return null
-    }
-    return leaderboard.map((athlete, i) => {
-      const content = athlete.name + " (" + athlete.points + ")"
-      return (
-        <div key={i} className='leaderboard-row'>
-          <label className="athlete-row">
-            <div className='athlete-list-name'>
-              {content}
-            </div>
-          </label>
-        </div>
-      )
-    })
-  }
   renderWeeklyLeaderboardTable() {
     const { leaderboard } = this.state
 
@@ -91,22 +71,8 @@ export default class App extends Component {
             <td>{athlete.city}</td>
          </tr>
        )
-    })
-    return leaderboard.map((athlete, i) => {
-      const content = athlete.name + " (" + athlete.points + ")"
-      return (
-        <div key={i} className='leaderboard-row'>
-          <label className="athlete-row">
-            <div className='athlete-list-name'>
-              {content}
-            </div>
-          </label>
-        </div>
-      )
-    })
-	  
-  }
-	  
+    }
+  }	  
   renderWeeklyLeaderboard() {
     return (
       <table id='weekly-leaderboard'>
@@ -132,12 +98,6 @@ export default class App extends Component {
             {this.renderActivities()}
           </div>
         </div>
-	<div>	    
-	  <h1 classname='leaderboard-title'>Leaderboard</h1>
-          <div className='leaderboard'>
-            {this.renderLeaderboard()}
-          </div>
-        </div>	    
       </div>
     )
   }
