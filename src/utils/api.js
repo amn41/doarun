@@ -15,6 +15,12 @@ const readAll = () => {
   })
 }
 
+const readLeaderboard = () => {
+  return fetch('/.netlify/functions/leaderboard-read').then((response) => {
+    return response.json()
+  })
+}    
+
 const update = (todoId, data) => {
   return fetch(`/.netlify/functions/todos-update/${todoId}`, {
     body: JSON.stringify(data),

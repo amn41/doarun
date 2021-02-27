@@ -26,6 +26,12 @@ export default class App extends Component {
         activities: activities
       })
     })
+    api.readAll().then((leaderboard) => {
+      console.log('leaderboard', leaderboard)
+      this.setState({
+        leaderboard: leaderboard
+      })
+    })
   }
   renderActivities() {
     const { activities } = this.state
@@ -48,12 +54,36 @@ export default class App extends Component {
       )
     })
   }
+  renderLeaderboard() {
+    const { leaderboard } = this.state
+
+    if (!leaderboard || !leaderboard.length) {
+      // Loading State here
+      return null
+    }
+    return leaderboard.map((athlete, i) => {
+      const content = athlete.name + " (" + athlete.points + ")"
+      return (
+        <div key={i} className='leaderboard-row'>
+          <label className="athlete-row">
+            <div className='athlete-list-name'>
+              {content}
+            </div>
+          </label>
+        </div>
+      )
+    })
+	
+  }	
   render() {
     return (
       <div className='app'>
         <AppHeader />	    
         <div className='activity-list'>
           {this.renderActivities()}
+        </div>
+        <div className='leaderboard'>
+          {this.renderLeaderboard()}
         </div>
       </div>
     )
