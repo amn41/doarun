@@ -52,16 +52,18 @@ export default class App extends Component {
       })
     })
   }
+  renderDistance(distance) {
+    return ((distance).toString() + " KM")
+  }
   renderLatestActivity() {
     const { latestActivity } = this.state
-    const content = (latestActivity.distance / 1000).toString() + " KM"
     if (!latestActivity) {
       // Loading State here
       return null
     }
       return (
       <div>
-        {content}
+         {this.renderDistance(latestActivity.distance/1000)}
       </div>
       )
   }
@@ -74,13 +76,16 @@ export default class App extends Component {
     }
 
       return weeklyLeaderboard.map((athlete, index) => {
-       const position = (index + 1).toString() + "."
+	  const position = (index + 1).toString() + "."
+       
        return (
          <tr key={index}>
             <td><span className="position">{position}</span></td>
-            <td>{athlete.name}</td>
-            <td>{athlete.distance}</td>
-            <td>{athlete.city}</td>
+            <td><img className="avatar" src="https://dgalywyr863hv.cloudfront.net/pictures/athletes/296399/461322/2/medium.jpg"/></td>
+            <td>
+	       <p className="athlete-name">{athlete.name}</p>
+	       <p className="athlete-distance">{this.renderDistance(athlete.distance)}</p>
+            </td>
          </tr>
        )
     })

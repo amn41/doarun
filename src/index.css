@@ -70,3 +70,12 @@ h1 {
 td { 
     padding: 10px;
 }
+
+.avatar {
+    border-radius: 50%;
+}
+
+.athlete-name {
+    font-weight: bold;
+    font-size: 150%;
+}
