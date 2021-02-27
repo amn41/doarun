@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import ContentEditable from './components/ContentEditable'
-import AppHeader from './components/AppHeader'
 import SettingsMenu from './components/SettingsMenu'
 import SettingsIcon from './components/SettingsIcon'
 import analytics from './utils/analytics'
@@ -305,8 +304,6 @@ export default class App extends Component {
   render() {
     return (
       <div className='app'>
-
-        <AppHeader />
 
         <div className='todo-list'>
           <h2>
