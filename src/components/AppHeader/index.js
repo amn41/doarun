@@ -11,7 +11,7 @@ const AppHeader = (props) => {
             <img src={logo} className='app-logo' alt='logo' />
             <div className='app-title-text'>
               <p className='app-intro'>
-                Track Your Runs with Friends
+                Virtual running groups with friends
               </p>
             </div>
           </div>
