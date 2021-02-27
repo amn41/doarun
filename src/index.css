@@ -33,6 +33,9 @@ button:focus, button:hover {
   text-decoration: none;
 }
 
+h1 {
+  font-family: "Bangers";
+}
 
 .btn-danger {
   background-color: #fb6d77;

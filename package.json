@@ -6,6 +6,7 @@
     "@analytics/google-analytics": "^0.3.1",
     "analytics": "^0.3.5",
     "faunadb": "^2.13.1",
+    "@fontsource/bangers": "^4.2.1",
     "markdown-magic": "^1.0.0",
     "node-fetch": "^2.6.1",
     "react": "^16.13.1",
