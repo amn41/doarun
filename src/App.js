@@ -35,8 +35,7 @@ export default class App extends Component {
     }
 
     return activities.map((activity, i) => {
-      const { data, ref } = activity
-      const id = getActivityId(activity)
+      const { data } = activity
       return (
         <div key={i} className='activity-item'>
           <label className="activity">
@@ -59,10 +58,3 @@ export default class App extends Component {
   }
 }
 
-
-function getActivityId(activity) {
-  if (!activity.ref) {
-    return null
-  }
-  return activity.ref['@ref'].id
-}
