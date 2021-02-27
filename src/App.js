@@ -60,7 +60,7 @@ export default class App extends Component {
 }
 
 
-function getActibityId(activity) {
+function getActivityId(activity) {
   if (!activity.ref) {
     return null
   }
