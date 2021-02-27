@@ -71,7 +71,7 @@ export default class App extends Component {
             <td>{athlete.city}</td>
          </tr>
        )
-    }
+    })
   }	  
   renderWeeklyLeaderboard() {
     return (
