@@ -82,7 +82,7 @@ export default class App extends Component {
        return (
          <tr key={index}>
             <td><span className="position">{position}</span></td>
-            <td><img className="avatar" src="https://dgalywyr863hv.cloudfront.net/pictures/athletes/296399/461322/2/medium.jpg"/></td>
+            <td><img alt="profile" className="avatar" src="https://dgalywyr863hv.cloudfront.net/pictures/athletes/296399/461322/2/medium.jpg"/></td>
             <td>
 	       <p className="athlete-name">{athlete.name}</p>
 	       <p className="athlete-distance">{this.renderDistance(athlete.distance)}</p>
