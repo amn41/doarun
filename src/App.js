@@ -73,13 +73,59 @@ export default class App extends Component {
         </div>
       )
     })
-	
+  renderWeeklyLeaderboardTable() {
+    const { leaderboard } = this.state
+
+    if (!leaderboard || !leaderboard.length) {
+      // Loading State here
+      return null
+    }
+
+    return leaderboard.map((athlete, index) => {
+       return (
+         <tr key={id}>
+            <td>{id}</td>
+            <td>{name}</td>
+            <td>{distance}</td>
+            <td>{city}</td>
+         </tr>
+       )
+    })
+    return leaderboard.map((athlete, i) => {
+      const content = athlete.name + " (" + athlete.points + ")"
+      return (
+        <div key={i} className='leaderboard-row'>
+          <label className="athlete-row">
+            <div className='athlete-list-name'>
+              {content}
+            </div>
+          </label>
+        </div>
+      )
+    })
+	  
+  }
+	  
+  renderWeeklyLeaderboard() {
+    return (
+      <table id='weekly-leaderboard'>
+        <tbody>
+          {this.renderWeeklyLeaderboardTable()}
+        </tbody>
+      </table>
+    )
   }	
   render() {
     return (
       <div className='app'>
         <AppHeader />
 	<div>
+	  <h1 classname='weekly-leaderboard-title'>THIS WEEK</h1> 
+          <div className='leaderboard-list'>
+            {this.renderWeeklyLeaderboard()}
+          </div>
+        </div>
+        <div>
 	  <h1 classname='leaderboard-title'>Recent Activities</h1> 
           <div className='activity-list'>
             {this.renderActivities()}

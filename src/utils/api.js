@@ -21,6 +21,12 @@ const readLeaderboard = () => {
   })
 }    
 
+const readWeeklyLeaderboard = () => {
+  return fetch('/.netlify/functions/weekly-leaderboard-read').then((response) => {
+    return response.json()
+  })
+}    
+
 const update = (todoId, data) => {
   return fetch(`/.netlify/functions/todos-update/${todoId}`, {
     body: JSON.stringify(data),
@@ -53,6 +59,7 @@ export default {
   create: create,
   readAll: readAll,
   readLeaderboard: readLeaderboard,
+  readWeeklyLeaderboard: readWeeklyLeaderboard,
   update: update,
   delete: deleteTodo,
   batchDelete: batchDeleteTodo
