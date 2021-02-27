@@ -99,13 +99,13 @@ export default class App extends Component {
       <div className='app'>
         <AppHeader />
 	<div className='container'>    
-	  <div className="item">
+	  <div className="item weekly-leaderboard-section">
 	    <h1 classname='weekly-leaderboard-title'>THIS WEEK</h1> 
             <div className='leaderboard-list'>
               {this.renderWeeklyLeaderboard()}
             </div>
           </div>
-          <div className="item">
+          <div className="item latest-run-section">
             <h1 classname='leaderboard-title'>LATEST RUN: BRIAN</h1> 
             <div className='activity-list'>
               {this.renderLatestActivity()}

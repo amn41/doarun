@@ -58,3 +58,15 @@ h1 {
 .container {
     display: flex;
 }
+
+.weekly-leaderboard-section {
+    margin: 40px 40px 40px 40px;
+}
+
+.latest-run-section {
+    margin: 40px 40px 40px 40px;
+}
+
+td { 
+    padding: 10px;
+}
