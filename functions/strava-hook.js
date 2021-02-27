@@ -29,13 +29,11 @@ exports.handler = async function(event, context) {
               statusCode: 400,
               body: JSON.stringify(error)
             }
-          }) 
-
-	
+          }) 	
     } else {
     	return {
     	    statusCode: 200,
     	    body: JSON.stringify({"hub.challenge":event.queryStringParameters["hub.challenge"]})
-    };
-	
+      };
+    }	
 }
