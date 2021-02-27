@@ -79,3 +79,15 @@ td {
     font-weight: bold;
     font-size: 150%;
 }
+
+.athlete-distance {
+    margin-top: -16px;
+}
+
+.target-distance {
+    background-color: #00C6C7;
+    border-radius: 50%;
+    padding: 10px;
+    font-size: 200%;
+    font-family: "Bangers";
+}

@@ -25,7 +25,8 @@ export default class App extends Component {
 	"name": "Suzi B",
 	"distance": 11.5,
 	"city": "Berlin"
-      }]  
+      }],
+      targetDistance: 12
   }
   componentDidMount() {
 
@@ -89,12 +90,25 @@ export default class App extends Component {
          </tr>
        )
     })
-  }	  
+  }
+  renderPaceMaker() {
+      const { targetDistance } = this.state
+      return (	
+         <tr >
+            <td></td>
+            <td><span className="target-distance">{targetDistance}</span></td>
+            <td>
+               <h1>TARGET DISTANCE</h1>
+            </td>
+         </tr>  
+      )
+  }
   renderWeeklyLeaderboard() {
     return (
       <table id='weekly-leaderboard'>
         <tbody>
           {this.renderWeeklyLeaderboardTable()}
+  	  {this.renderPaceMaker()}
         </tbody>
       </table>
     )
