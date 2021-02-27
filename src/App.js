@@ -26,7 +26,7 @@ export default class App extends Component {
         activities: activities
       })
     })
-    api.readAll().then((leaderboard) => {
+    api.readLeaderboard().then((leaderboard) => {
       console.log('leaderboard', leaderboard)
       this.setState({
         leaderboard: leaderboard
