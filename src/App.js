@@ -73,6 +73,7 @@ export default class App extends Component {
         </div>
       )
     })
+  }
   renderWeeklyLeaderboardTable() {
     const { leaderboard } = this.state
 
@@ -83,11 +84,11 @@ export default class App extends Component {
 
     return leaderboard.map((athlete, index) => {
        return (
-         <tr key={id}>
-            <td>{id}</td>
-            <td>{name}</td>
-            <td>{distance}</td>
-            <td>{city}</td>
+         <tr key={index}>
+            <td>{index}</td>
+            <td>{athlete.name}</td>
+            <td>{athlete.distance}</td>
+            <td>{athlete.city}</td>
          </tr>
        )
     })
