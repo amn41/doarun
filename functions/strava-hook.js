@@ -23,8 +23,9 @@ exports.handler = async function(event, context) {
 	console.log(tokenHeader)
         return fetch(url, {headers : { 'Authorization': tokenHeader }})
             .then((response) => {
-		console.log('success', response.json())
-    	        return response.json()
+		const activity = response.json()
+		console.log('success', activity)
+    	        return activity
 	    })
           .then((activity) =>
 	  	{if (eventItem.data.aspect_type === "create") {
