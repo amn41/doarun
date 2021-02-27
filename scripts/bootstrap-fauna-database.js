@@ -32,12 +32,12 @@ function createFaunaDB(key) {
   })
 
   /* Based on your requirements, change the schema here */
-  return client.query(q.Create(q.Ref('classes'), { name: 'todos' }))
+  return client.query(q.Create(q.Ref('classes'), { name: 'events' }))
     .then(() => {
       return client.query(
         q.Create(q.Ref('indexes'), {
-          name: 'all_todos',
-          source: q.Ref('classes/todos')
+          name: 'all_events',
+          source: q.Ref('classes/events')
         }))
     }).catch((e) => {
       // Database already exists
