@@ -22,9 +22,9 @@ exports.handler = async function(event, context) {
         return fetch(url, {headers : { 'Authorization': tokenHeader }})
           .then((response) => response.json())
           .then((activity) =>
-	  	  if (eventItem.data.aspect_type === "create") {
+	  	{if (eventItem.data.aspect_type === "create") {
 	  	      client.query(q.Create(q.Ref('classes/activities'), activity))
-                })
+                }})
           .then(() => client.query(q.Create(q.Ref('classes/stravaevents'), eventItem)))
           .then((response) => {
             console.log('success', response)
