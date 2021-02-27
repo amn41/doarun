@@ -55,14 +55,14 @@ export default class App extends Component {
     })
   }
   renderWeeklyLeaderboardTable() {
-    const { leaderboard } = this.state
+    const { weeklyLeaderboard } = this.state
 
-    if (!leaderboard || !leaderboard.length) {
+    if (!weeklyLeaderboard || !weeklyLeaderboard.length) {
       // Loading State here
       return null
     }
 
-    return leaderboard.map((athlete, index) => {
+    return weeklyLeaderboard.map((athlete, index) => {
        return (
          <tr key={index}>
             <td>{index}</td>
