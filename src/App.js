@@ -6,24 +6,43 @@ import './App.css'
 
 export default class App extends Component {
   state = {
-    activities: []
+      latestActivity: {
+        "athlete": "Alan Nichol",
+        "distance": 1000,
+        "id": 4861036852,
+        "start_date": "2021-02-27T18:50:00Z",
+        "start_date_local": "2021-02-27T18:50:00Z",
+      },
+      weeklyLeaderboard: [{
+	"name": "Alan Nichol",
+	"distance": 15.6,
+	"city": "Berlin"
+      }, {
+	"name": "Brian Daly",
+	"distance": 12.8,
+	"city": "Berlin"
+      }, {
+	"name": "Suzi B",
+	"distance": 11.5,
+	"city": "Berlin"
+      }]  
   }
   componentDidMount() {
 
-    // Fetch all activities
-    api.readAll().then((activities) => {
-      if (activities.message === 'unauthorized') {
+    // Fetch data
+    api.readLatestActivity().then((latestActivity) => {
+      if (latestActivity.message === 'unauthorized') {
         if (isLocalHost()) {
-          alert('FaunaDB key is not unauthorized. Make sure you set it in terminal session where you ran `npm start`. Visit http://bit.ly/set-fauna-key for more info')
+          alert('FaunaDB key is not authorized. Make sure you set it in terminal session where you ran `npm start`. Visit http://bit.ly/set-fauna-key for more info')
         } else {
-          alert('FaunaDB key is not unauthorized. Verify the key `FAUNADB_SERVER_SECRET` set in Netlify enviroment variables is correct')
+          alert('FaunaDB key is not authorized. Verify the key `FAUNADB_SERVER_SECRET` set in Netlify enviroment variables is correct')
         }
         return false
       }
 
-      console.log('all activities', activities)
+      console.log('latest activity', latestActivity)
       this.setState({
-        activities: activities
+        latestActivity: latestActivity
       })
     })
     api.readWeeklyLeaderboard().then((leaderboard) => {
@@ -33,26 +52,18 @@ export default class App extends Component {
       })
     })
   }
-  renderActivities() {
-    const { activities } = this.state
+  renderLatestActivity() {
+    const { latestActivity } = this.state
 
-    if (!activities || !activities.length) {
+    if (!latestActivity) {
       // Loading State here
       return null
     }
-
-    return activities.map((activity, i) => {
-      const { data } = activity
       return (
-        <div key={i} className='activity-item'>
-          <label className="activity">
-            <div className='activity-list-title'>
-	      {data.name}
-            </div>
-          </label>
-        </div>
+      <div>
+        latestActivity.distance
+      </div>
       )
-    })
   }
   renderWeeklyLeaderboardTable() {
     const { weeklyLeaderboard } = this.state
@@ -63,7 +74,7 @@ export default class App extends Component {
     }
 
       return weeklyLeaderboard.map((athlete, index) => {
-       const position = `index.`
+       const position = (index + 1).toString() + "."
        return (
          <tr key={index}>
             <td><span className="position">{position}</span></td>
@@ -94,9 +105,9 @@ export default class App extends Component {
           </div>
         </div>
         <div>
-	  <h1 classname='leaderboard-title'>Recent Activities</h1> 
+          <h1 classname='leaderboard-title'>LATEST RUN: BRIAN</h1> 
           <div className='activity-list'>
-            {this.renderActivities()}
+            {this.renderLatestActivity()}
           </div>
         </div>
       </div>
