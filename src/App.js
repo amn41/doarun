@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import AppHeader from './components/AppHeader'
 import api from './utils/api'
 import isLocalHost from './utils/isLocalHost'
 import './App.css'
@@ -50,6 +51,7 @@ export default class App extends Component {
   render() {
     return (
       <div className='app'>
+        <AppHeader />	    
         <div className='activity-list'>
           {this.renderActivities()}
         </div>
