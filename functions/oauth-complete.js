@@ -23,7 +23,7 @@ exports.handler = function (event, context) {
   const code = event.queryStringParameters.code
   //console.log(event.queryStringParameters.scope)
   stravaApi.config({"client_id": process.env.STRAVA_CLIENT_ID, "client_secret": process.env.STRAVA_CLIENT_SECRET})
-  stravaApi.oauth.getToken(code)
+  return stravaApi.oauth.getToken(code)
   .then((response) =>  {
     console.log("got response from requesting token")
     console.log(response.status)
