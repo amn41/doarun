@@ -30,9 +30,10 @@ exports.handler = function (event, context) {
   .then((payload) =>  {
     console.log("got response from requesting token")
     console.log(payload)
+    const authItem = {data: payload}
     console.log(JSON.stringify(payload))
     return ( 
-      client.query(q.Create(q.Ref('classes/stravaauths'), payload))
+      client.query(q.Create(q.Ref('classes/stravaauths'), authItem))
     )
   })
   .then(() => {
