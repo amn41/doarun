@@ -35,6 +35,7 @@ button:focus, button:hover {
 
 h1 {
   font-family: "Bangers";
+  color: #222;
 }
 
 .position {
@@ -60,11 +61,11 @@ h1 {
 }
 
 .weekly-leaderboard-section {
-    margin: 40px 40px 40px 40px;
+    margin: 40px 40px 40px 100px;
 }
 
 .latest-run-section {
-    margin: 40px 40px 40px 40px;
+    margin: 40px 40px 40px 100px;
 }
 
 td { 
@@ -86,8 +87,9 @@ td {
 
 .target-distance {
     background-color: #00C6C7;
+    color: white;
     border-radius: 50%;
-    padding: 10px;
+    padding: 10px 15px;
     font-size: 200%;
     font-family: "Bangers";
 }
