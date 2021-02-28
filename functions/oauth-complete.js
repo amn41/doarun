@@ -34,5 +34,12 @@ exports.handler = function (event, context) {
       statusCode: 200,
       body: page,
     } 
-  });
+  }).catch((error) => {
+      console.log('error', error)
+      /* Error! return the error with statusCode 400 */
+    return {
+      statusCode: 200,
+      body: page,
+    } 
+  })
 };
