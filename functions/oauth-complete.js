@@ -24,11 +24,10 @@ exports.handler = function (event, context) {
   //console.log(event.queryStringParameters.scope)
   stravaApi.config({"client_id": process.env.STRAVA_CLIENT_ID, "client_secret": process.env.STRAVA_CLIENT_SECRET})
   return stravaApi.oauth.getToken(code)
-  .then((response) =>  {
+  .then((payload) =>  {
     console.log("got response from requesting token")
-    console.log(response.status)
-    data = response.json()
-    console.log(JSON.stringify(data))
+    console.log(payload)
+    console.log(JSON.stringify(payload))
     //strava = new stravaApi.client(access_token);
     //const payload = await strava.athlete.get({})
     return {
