@@ -14,7 +14,7 @@ const page = `
   <h3>authentication successful</h3>
 </body>
 <script type="text/javascript">
-  //window.location.replace("https://amazing-jang-8a41ee.netlify.app");
+  window.location.replace("https://amazing-jang-8a41ee.netlify.app");
 </script>
 </html>`
 
@@ -37,8 +37,6 @@ exports.handler = function (event, context) {
     )
   })
   .then(() => {
-    //strava = new stravaApi.client(access_token);
-    //const payload = await strava.athlete.get({})
     return {
       statusCode: 200,
       body: page,
