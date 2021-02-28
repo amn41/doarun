@@ -98,6 +98,17 @@ class Login extends React.Component {
 
 
 export default class App extends Component {
+
+  componentDidMount() {
+      const netlifyUser = netlifyIdentity.currentUser()
+      const isAuthenticated = netlifyUser != null;
+      if (isAuthenticated) {
+        netlifyAuth.isAuthenticated = true;
+        netlifyAuth.user = netlifyUser;
+      }
+      console.log("authenticated ? ")
+      console.log(isAuthenticated)
+  }
   render() {
       return (
     	<Router>
