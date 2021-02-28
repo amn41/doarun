@@ -4,7 +4,7 @@ import Leaderboard from './Leaderboard';
 import Profile from './components/Profile';
 import netlifyIdentity from 'netlify-identity-widget';
 import {
-  BrowserRouter as Router,
+  HashRouter as Router,
   Route,
   Switch,
   Link,
