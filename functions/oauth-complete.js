@@ -20,6 +20,9 @@ const page = `
 
 exports.handler = function (event, context) {
   console.log('Function `oauth-complete` invoked')
+  const client = new faunadb.Client({
+    secret: process.env.FAUNADB_SERVER_SECRET
+  })  
   const code = event.queryStringParameters.code
   //console.log(event.queryStringParameters.scope)
   stravaApi.config({"client_id": process.env.STRAVA_CLIENT_ID, "client_secret": process.env.STRAVA_CLIENT_SECRET})
@@ -28,6 +31,11 @@ exports.handler = function (event, context) {
     console.log("got response from requesting token")
     console.log(payload)
     console.log(JSON.stringify(payload))
+    return ( 
+      client.query(q.Create(q.Ref('classes/stravaauths'), payload)))
+    )
+  })
+  .then(() => {
     //strava = new stravaApi.client(access_token);
     //const payload = await strava.athlete.get({})
     return {
