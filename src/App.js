@@ -1,7 +1,4 @@
 import React, { Component } from 'react'
-import AppHeader from './components/AppHeader'
-import api from './utils/api'
-import isLocalHost from './utils/isLocalHost'
 import './App.css'
 import Leaderboard from './Leaderboard';
 import netlifyIdentity from 'netlify-identity-widget';
