@@ -22,6 +22,7 @@ exports.handler = function (event, context) {
   console.log('Function `oauth-complete` invoked')
   const code = event.queryStringParameters.code
   //console.log(event.queryStringParameters.scope)
+  stravaApi.config({"client_id": process.env.STRAVA_CLIENT_ID, "client_secret": process.env.STRAVA_CLIENT_SECRET})
   stravaApi.oauth.getToken(code)
   .then((response) =>  {
     console.log("got response from requesting token")
