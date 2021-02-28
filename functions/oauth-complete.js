@@ -18,19 +18,21 @@ const page = `
 </script>
 </html>`
 
-exports.handler = function (event, context, callback) {
+exports.handler = function (event, context) {
   console.log('Function `oauth-complete` invoked')
   const code = event.queryStringParameters.code
   //console.log(event.queryStringParameters.scope)
-  const response = await stravaApi.oauth.getToken(code)
-  console.log("got response from requesting token")
-  console.log(response.status)
-  data = response.json()
-  console.log(JSON.stringify(data))
-  //strava = new stravaApi.client(access_token);
-  //const payload = await strava.athlete.get({})
-  callback(null, {
-    statusCode: 200,
-    body: page,
+  stravaApi.oauth.getToken(code)
+  .then((response) =>  {
+    console.log("got response from requesting token")
+    console.log(response.status)
+    data = response.json()
+    console.log(JSON.stringify(data))
+    //strava = new stravaApi.client(access_token);
+    //const payload = await strava.athlete.get({})
+    return {
+      statusCode: 200,
+      body: page,
+    } 
   });
 };
