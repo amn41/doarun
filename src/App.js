@@ -1,10 +1,12 @@
 import React, { Component } from 'react'
 import './App.css'
 import Leaderboard from './Leaderboard';
+import Profile from './components/Profile';
 import netlifyIdentity from 'netlify-identity-widget';
 import {
   BrowserRouter as Router,
   Route,
+  Switch,
   Link,
   Redirect,
   withRouter
@@ -108,9 +110,20 @@ export default class App extends Component {
     	      <li>
     	        <Link to="/leaderboard">Leaderboard</Link>
     	      </li>
-    	    </ul>
-    	    <Route path="/login" component={Login} />
-    	    <PrivateRoute path="/leaderboard" component={Leaderboard} />
+    	      <li>
+    	        <Link to="/profile">Profile</Link>
+    	      </li>
+            </ul>
+            <Switch>
+              <Route exact path="/">
+                <div>
+                  <h2>Home</h2>
+                </div>
+              </Route>
+              <Route path="/login" component={Login} />
+    	      <PrivateRoute path="/leaderboard" component={Leaderboard} />
+    	      <PrivateRoute path="/profile" component={Profile} />
+            </Switch>
     	  </div>
     	</Router>
     )
