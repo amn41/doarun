@@ -19,6 +19,8 @@ const page = `
 
 exports.handler = function (event, context, callback) {
   console.log('Function `oauth-complete` invoked')
+  console.log(event.queryStringParameters.code)
+  console.log(event.queryStringParameters.scope)
   callback(null, {
     statusCode: 200,
     body: page,
