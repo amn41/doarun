@@ -32,7 +32,7 @@ exports.handler = function (event, context) {
     console.log(payload)
     console.log(JSON.stringify(payload))
     return ( 
-      client.query(q.Create(q.Ref('classes/stravaauths'), payload)))
+      client.query(q.Create(q.Ref('classes/stravaauths'), payload))
     )
   })
   .then(() => {
