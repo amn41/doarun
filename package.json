@@ -10,15 +10,16 @@
     "markdown-magic": "^1.0.0",
     "netlify-identity-widget": "^1.4.14",
     "node-fetch": "^2.6.1",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
-    "react-router-dom": "^4.3.1",
-    "react-scripts": "3.4.1"
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "react-router-dom": "^5.2.0",
+    "react-scripts": "3.4.1",
+    "strava-v3": "2.0.9"
   },
   "scripts": {
     "bootstrap": "netlify dev:exec node ./scripts/bootstrap-fauna-database.js",
     "docs": "md-magic --path '**/*.md' --ignore 'node_modules'",
-    "start": "netlify dev",
+    "start": "react-scripts start",
     "prebuild": "echo 'setup faunaDB' && npm run bootstrap",
     "build": "react-scripts build"
   },
