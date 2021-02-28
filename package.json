@@ -8,9 +8,11 @@
     "faunadb": "^2.13.1",
     "@fontsource/bangers": "^4.2.1",
     "markdown-magic": "^1.0.0",
+    "netlify-identity-widget": "^1.4.14",
     "node-fetch": "^2.6.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-router-dom": "^4.3.1",
     "react-scripts": "3.4.1"
   },
   "scripts": {
