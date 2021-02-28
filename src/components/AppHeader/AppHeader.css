@@ -20,6 +20,11 @@
 .app-left-nav {
   display: flex;
 }
+.app-right-nav {
+  display: flex;
+  margin-left: auto;
+  margin-right: 30px;
+}
 .app-title {
   font-size: 32px;
   margin: 0px;
