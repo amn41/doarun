@@ -38,7 +38,6 @@ export default class App extends Component {
     user: netlifyIdentity.currentUser()
   }
   authenticate(callback) {
-    this.isAuthenticated = true;
     netlifyIdentity.open();
     netlifyIdentity.on('login', user => {
       this.setState({
