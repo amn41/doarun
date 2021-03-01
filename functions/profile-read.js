@@ -4,6 +4,6 @@ exports.handler = (event, context, callback) => {
   const data = { "identity": identity, "user": user }  
   callback(null, {
     statusCode: 200,
-    body: JSON.stringify(data),
+    body: JSON.stringify(user),
   });
 }
