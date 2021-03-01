@@ -7,62 +7,21 @@ import {
   HashRouter as Router,
   Route,
   Switch,
-  Link,
-  Redirect,
-  withRouter
+  Redirect
 } from 'react-router-dom';
 
 
-const netlifyAuth = {
-  isAuthenticated: false,
-  user: null,
-    authenticate(callback) {
-    this.isAuthenticated = true;
-    netlifyIdentity.open();
-    netlifyIdentity.on('login', user => {
-      this.user = user;
-      callback(user);
-    });
-  },
-  signout(callback) {
-    this.isAuthenticated = false;
-    netlifyIdentity.logout();
-    netlifyIdentity.on('logout', () => {
-      this.user = null;
-      callback();
-    });
-  }
-};
-
-const AuthButton = withRouter(
-  ({ history }) =>
-    netlifyAuth.isAuthenticated ? (
-      <p>
-        Welcome!{' '}
-        <button
-          onClick={() => {
-            netlifyAuth.signout(() => history.push('/'));
-          }}
-        >
-          Sign out
-        </button>
-      </p>
-    ) : (
-      <p>You are not logged in.</p>
-    )
-);
-
-function PrivateRoute({ component: Component, ...rest }) {
+function PrivateRoute({ component: Component, isAuthenticated, ...rest }) {
   return (
     <Route
       {...rest}
       render={props =>
-        netlifyAuth.isAuthenticated ? (
+        isAuthenticated ? (
           <Component {...props} />
         ) : (
           <Redirect
             to={{
-              pathname: '/login',
+              pathname: '/profile',
               state: { from: props.location }
             }}
           />
@@ -72,70 +31,43 @@ function PrivateRoute({ component: Component, ...rest }) {
   );
 }
 
-class Login extends React.Component {
-  state = { redirectToReferrer: false };
-
-  login = () => {
-    netlifyAuth.authenticate(() => {
-      this.setState({ redirectToReferrer: true });
-    });
-  };
-
-  render() {
-    let { from } = this.props.location.state || { from: { pathname: '/' } };
-    let { redirectToReferrer } = this.state;
-
-    if (redirectToReferrer) return <Redirect to={from} />;
-
-    return (
-      <div>
-        <p>You must log in to view the page at {from.pathname}</p>
-        <button onClick={this.login}>Log in</button>
-      </div>
-    );
-  }
-}
-
 
 export default class App extends Component {
-
-  componentDidMount() {
-      const netlifyUser = netlifyIdentity.currentUser()
-      const isAuthenticated = netlifyUser != null;
-      if (isAuthenticated) {
-        netlifyAuth.isAuthenticated = true;
-        netlifyAuth.user = netlifyUser;
-      }
-      console.log("authenticated ? ")
-      console.log(isAuthenticated)
+  state = {
+    isAuthenticated: netlifyIdentity.currentUser() != null,
+    user: netlifyIdentity.currentUser()
   }
+  authenticate(callback) {
+    this.isAuthenticated = true;
+    netlifyIdentity.open();
+    netlifyIdentity.on('login', user => {
+      this.setState({
+        isAuthenticated: true,
+        user: user
+      })
+      callback(user);
+    });
+  }
+  signout(callback) {
+    netlifyIdentity.logout();
+    netlifyIdentity.on('logout', () => {
+      this.setState({
+        isAuthenticated: false,
+        user: null
+      })
+      callback();
+    });
+  }
+
   render() {
       return (
     	<Router>
-    	  <div>
-    	    <AuthButton />
-    	    <ul>
-    	      <li>
-    	        <Link to="/login">Login Screen</Link>
-    	      </li>
-    	      <li>
-    	        <Link to="/leaderboard">Leaderboard</Link>
-    	      </li>
-    	      <li>
-    	        <Link to="/profile">Profile</Link>
-    	      </li>
-            </ul>
             <Switch>
-              <Route exact path="/">
-                <div>
-                  <h2>Home</h2>
-                </div>
+    	      <PrivateRoute exact path="/" component={Leaderboard} isAuthenticated={this.state.isAuthenticated} />
+    	      <Route path="/profile" >
+                <Profile isAuthenticated={this.state.isAuthenticated} user={this.state.user} authenticate={this.authenticate} signout={this.signout}/>
               </Route>
-              <Route path="/login" component={Login} />
-    	      <PrivateRoute path="/leaderboard" component={Leaderboard} />
-    	      <PrivateRoute path="/profile" component={Profile} />
             </Switch>
-    	  </div>
     	</Router>
     )
   }

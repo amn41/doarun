@@ -54,7 +54,7 @@ export default class Leaderboard extends Component {
     })
   }
   renderDistance(distance) {
-    return ((distance).toString() + " KM")
+    return ((distance).toString() + " km")
   }
   renderLatestActivity() {
     const { latestActivity } = this.state
