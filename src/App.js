@@ -37,27 +37,29 @@ export default class App extends Component {
     isAuthenticated: netlifyIdentity.currentUser() != null,
     user: netlifyIdentity.currentUser()
   }
-  authenticate(callback) {
+  constructor(props) {
+    super(props);
+    this.authenticate = this.authenticate.bind(this);
+    this.signout = this.signout.bind(this);
+  } 
+  authenticate() {
     netlifyIdentity.open();
     netlifyIdentity.on('login', user => {
       this.setState({
         isAuthenticated: true,
         user: user
       })
-      callback(user);
     });
   }
-  signout(callback) {
+  signout() {
     netlifyIdentity.logout();
     netlifyIdentity.on('logout', () => {
       this.setState({
         isAuthenticated: false,
         user: null
       })
-      callback();
     });
   }
-
   render() {
       return (
     	<Router>
