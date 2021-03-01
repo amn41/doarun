@@ -13,19 +13,7 @@ export default class Leaderboard extends Component {
         "start_date": "2021-02-27T18:50:00Z",
         "start_date_local": "2021-02-27T18:50:00Z",
       },
-      weeklyLeaderboard: [{
-	"name": "Alan Nichol",
-	"distance": 15.6,
-	"city": "Berlin"
-      }, {
-	"name": "Brian Daly",
-	"distance": 12.8,
-	"city": "Berlin"
-      }, {
-	"name": "Suzi B",
-	"distance": 11.5,
-	"city": "Berlin"
-      }],
+      activities: [],
       targetDistance: 12
   }
   componentDidMount() {
@@ -46,10 +34,10 @@ export default class Leaderboard extends Component {
         latestActivity: latestActivity
       })
     })
-    api.readWeeklyLeaderboard().then((leaderboard) => {
-      console.log('weeklyleaderboard', leaderboard)
+    api.readAll().then((activities) => {
+      console.log('activites', activities)
       this.setState({
-        weeklyLeaderboard: leaderboard
+        activities: activities
       })
     })
   }
@@ -68,6 +56,14 @@ export default class Leaderboard extends Component {
       </div>
       )
   }
+  computeLeaderboard() {
+    const { activities } = this.state
+    const leaderboard = {}
+    activities.foreach(activity => leaderboard[activity.data.athlete.id] = 0)
+    activities.foreach(activity => leaderboard[activity.data.athlete.id] += activity.data.distance)
+    console.log("leaderboard computed")
+    console.log(JSON.stringify(leaderboard))
+  }
   renderWeeklyLeaderboardTable() {
     const { weeklyLeaderboard } = this.state
 
@@ -75,7 +71,7 @@ export default class Leaderboard extends Component {
       // Loading State here
       return null
     }
-
+    this.computeLeaderboard()
       return weeklyLeaderboard.map((athlete, index) => {
 	  const position = (index + 1).toString() + "."
        
@@ -119,13 +115,13 @@ export default class Leaderboard extends Component {
         <AppHeader />
 	<div className='container'>    
 	  <div className="item weekly-leaderboard-section">
-	    <h1 classname='weekly-leaderboard-title'>THIS WEEK</h1> 
+	    <h1 className='weekly-leaderboard-title'>THIS WEEK</h1> 
             <div className='leaderboard-list'>
               {this.renderWeeklyLeaderboard()}
             </div>
           </div>
           <div className="item latest-run-section">
-            <h1 classname='leaderboard-title'>LATEST RUN: BRIAN</h1> 
+            <h1 className='leaderboard-title'>LATEST RUN: BRIAN</h1> 
             <div className='activity-list'>
               {this.renderLatestActivity()}
             </div>
