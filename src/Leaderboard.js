@@ -68,16 +68,15 @@ export default class Leaderboard extends Component {
       </div>
       )
   }
-  renderWeeklyLeaderboardTable() {
-    const { weeklyLeaderboard } = this.state
+  renderPartialLeaderboardTable(athletes, offset) {
 
-    if (!weeklyLeaderboard || !weeklyLeaderboard.length) {
+    if (!athletes || !athletes.length) {
       // Loading State here
       return null
     }
 
-      return weeklyLeaderboard.map((athlete, index) => {
-	  const position = (index + 1).toString() + "."
+      return athletes.map((athlete, index) => {
+	  const position = (index + 1 + offset).toString() + "."
        
        return (
          <tr key={index}>
@@ -87,6 +86,7 @@ export default class Leaderboard extends Component {
 	       <p className="athlete-name">{athlete.name}</p>
 	       <p className="athlete-distance">{this.renderDistance(athlete.distance)}</p>
             </td>
+            <td></td>
          </tr>
        )
     })
@@ -94,21 +94,29 @@ export default class Leaderboard extends Component {
   renderPaceMaker() {
       const { targetDistance } = this.state
       return (	
-         <tr >
+         <tr className="target-text-row">
             <td></td>
-            <td><span className="target-distance">{targetDistance}</span></td>
+            <td></td>
+            <td></td>
             <td>
-               <h1>TARGET DISTANCE</h1>
+              <h1 className="target-text">
+                <span className="target-distance">{targetDistance} KM TARGET </span>
+              </h1>
             </td>
          </tr>  
       )
   }
   renderWeeklyLeaderboard() {
+    const { weeklyLeaderboard } = this.state
     return (
       <table id='weekly-leaderboard'>
         <tbody>
-          {this.renderWeeklyLeaderboardTable()}
+          {this.renderPartialLeaderboardTable(weeklyLeaderboard.slice(1),0)}
   	  {this.renderPaceMaker()}
+          <tr className="pacemaker-row">
+            <td colspan="4"><hr className="pacemaker-line"/></td>
+          </tr>
+          {this.renderPartialLeaderboardTable(weeklyLeaderboard.slice(2,10),2)}
         </tbody>
       </table>
     )

@@ -87,10 +87,29 @@ td {
 }
 
 .target-distance {
-    background-color: #00C6C7;
-    color: white;
-    border-radius: 50%;
-    padding: 10px 15px;
-    font-size: 200%;
+    color: #00C6C7;
     font-family: "Bangers";
+}
+
+.target-text {
+    margin: 0px;
+}
+
+.target-text-row td {
+    margin: 0px;
+    padding: 0px
+}
+
+.pacemaker-line {
+    padding: 0px;
+    margin: 0px;
+}
+
+.pacemaker-row {
+    height: 2px;
+}
+
+.pacemaker-row hr {
+    border: 4px solid #00C6C7;    
+    border-radius: 16px;
 }
