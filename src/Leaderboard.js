@@ -29,8 +29,8 @@ export default class Leaderboard extends Component {
       targetDistance: 12
   }
   componentDidMount() {
-
     // Fetch data
+    /*
     api.readLatestActivity().then((latestActivity) => {
       if (latestActivity.message === 'unauthorized') {
         if (isLocalHost()) {
@@ -51,6 +51,15 @@ export default class Leaderboard extends Component {
       this.setState({
         weeklyLeaderboard: leaderboard
       })
+    })
+    api.readAll().then((activities) => {
+      console.log('activites', activities)
+      this.setState({
+        activities: activities
+      })
+    )}*/
+    api.readAll().then((result) => {
+      console.log(result)
     })
   }
   renderDistance(distance) {
@@ -114,7 +123,7 @@ export default class Leaderboard extends Component {
           {this.renderPartialLeaderboardTable(weeklyLeaderboard.slice(1),0)}
   	  {this.renderPaceMaker()}
           <tr className="pacemaker-row">
-            <td colspan="4"><hr className="pacemaker-line"/></td>
+            <td colSpan="4"><hr className="pacemaker-line"/></td>
           </tr>
           {this.renderPartialLeaderboardTable(weeklyLeaderboard.slice(2,10),2)}
         </tbody>
@@ -127,13 +136,13 @@ export default class Leaderboard extends Component {
         <AppHeader />
 	<div className='container'>    
 	  <div className="item weekly-leaderboard-section">
-	    <h1 classname='weekly-leaderboard-title'>THIS WEEK</h1> 
+	    <h1 className='weekly-leaderboard-title'>THIS WEEK</h1> 
             <div className='leaderboard-list'>
               {this.renderWeeklyLeaderboard()}
             </div>
           </div>
           <div className="item latest-run-section">
-            <h1 classname='leaderboard-title'>LATEST RUN: BRIAN</h1> 
+            <h1 className='leaderboard-title'>LATEST RUN: BRIAN</h1> 
             <div className='activity-list'>
               {this.renderLatestActivity()}
             </div>
