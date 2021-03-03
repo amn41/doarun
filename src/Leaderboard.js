@@ -17,10 +17,10 @@ export default class Leaderboard extends Component {
       targetDistance: 12
   }
   componentDidMount() {
+
     // Fetch data
-    console.log("fetching data!")
-    api.readAll().then((activities) => {
-      if (activities.message === 'unauthorized') {
+    api.readLatestActivity().then((latestActivity) => {
+      if (latestActivity.message === 'unauthorized') {
         if (isLocalHost()) {
           alert('FaunaDB key is not authorized. Make sure you set it in terminal session where you ran `npm start`. Visit http://bit.ly/set-fauna-key for more info')
         } else {
@@ -28,6 +28,13 @@ export default class Leaderboard extends Component {
         }
         return false
       }
+
+      console.log('latest activity', latestActivity)
+      this.setState({
+        latestActivity: latestActivity
+      })
+    })
+    api.readAll().then((activities) => {
       console.log('activites', activities)
       this.setState({
         activities: activities
