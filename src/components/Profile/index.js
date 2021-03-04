@@ -51,6 +51,7 @@ export default class Profile extends Component {
       <div>
         {this.renderProfile()}
         <div>
+          <p>{this.props.user}</p>
           <AuthButton isAuthenticated={this.props.isAuthenticated} authenticate={this.props.authenticate} signout={this.props.signout}/>
         </div>
       </div>
