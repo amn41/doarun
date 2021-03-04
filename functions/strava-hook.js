@@ -1,6 +1,7 @@
 const faunadb = require('faunadb')
 const q = faunadb.query
 const fetch = require("node-fetch")
+const stravaApi = require('strava-v3')
 
 const STRAVA_API = "https://www.strava.com/api/v3/activities/";
 
@@ -16,33 +17,26 @@ exports.handler = async function(event, context) {
         const eventItem = {
           data: data
         }
-        /* construct the fauna query */
-	const url = STRAVA_API + eventItem.data.object_id;
-	const tokenHeader = 'Bearer ' + process.env.STRAVA_TOKEN;
-        return fetch(url, {headers : { 'Authorization': tokenHeader }})
-           .then((response) => response.json())
-           .then((activity) => {
-   	        console.log('fetched activity', activity)	
-	       if (eventItem.data.aspect_type === "create") {
-		   const activityItem = { data : activity }
-	  	      client.query(q.Create(q.Ref('classes/activities'), activityItem))
-                }})
-          .then(() => client.query(q.Create(q.Ref('classes/stravaevents'), eventItem)))
-          .then((response) => {
-            console.log('success', response)
-            /* Success! return the response with statusCode 200 */
-            return {
-              statusCode: 200,
-              body: JSON.stringify(response)
-            }
-          }).catch((error) => {
-            console.log('error', error)
-            /* Error! return the error with statusCode 400 */
-            return {
-              statusCode: 400,
-              body: JSON.stringify(error)
-            }
-          }) 	
+        client.query(q.Create(q.Ref('classes/stravaevents'), eventItem)))
+        strava = new stravaApi.client("")
+        strava.activities.get(data.object_id)
+        .then((activity) => { 
+           console.log("fetched activity", activity)
+           return {
+             statusCode: 200,
+             body: "ok"
+           }
+        })
+          /* 		   
+          const activityItem = { data : activity }
+	  client.query(q.Create(q.Ref('classes/activities'), activityItem)) */
+        .catch((error) => {
+           console.log('error', error)
+           return {
+             statusCode: 200,
+             body: "ok"
+           }
+        })
     } else {
     	return {
     	    statusCode: 200,
