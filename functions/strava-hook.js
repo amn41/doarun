@@ -18,29 +18,29 @@ exports.handler = async function(event, context) {
           data: data
         }
         return client.query(q.Create(q.Ref('classes/stravaevents'), eventItem))
-        .then((x) => 
+        .then((x) =>  {
           console.log("event persisted")
-          client.query(q.Get(q.Ref('classes/stravaauths/291790587532673540')))
-        )
+          return client.query(q.Get(q.Ref('classes/stravaauths/291790587532673540')))
+        })
         .then((response) => {
            console.log('fetched auth', response)
-           const refreshToken = responses.data.refresh_token
+           const refreshToken = response.data.refresh_token
            console.log('refresh token', refreshToken)
-           const strava = new stravaApi.client("")
-           return strava.oauth.refreshToken(refreshToken)
+           //const strava = new stravaApi.client("")
+           return stravaApi.oauth.refreshToken(refreshToken)
         })
         .then((response) => {
            console.log(response)
            const { access_token, refresh_token } = response
            console.log("new access token", access_token)
-           client.query(q.Update('classes/stravaauths/291790587532673540', 
+           client.query(q.Update(q.Ref('classes/stravaauths/291790587532673540'), 
                                  {data: { access_token: access_token, refresh_token: refresh_token }}
                         ))
            return new stravaApi.client(access_token)
         })
         .then((strava) => {
           console.log("fetching activity", data.object_id)
-          strava.activities.get(data.object_id)
+          return strava.activities.get({id: data.object_id})
         })
         .then((activity) => { 
           console.log("fetched activity", activity)
@@ -51,14 +51,6 @@ exports.handler = async function(event, context) {
             body: "ok"
           }
         })
-        /*
-	export interface RefreshTokenResponse {
-	    token_type: string;
-	    access_token: string;
-	    expires_at: number;
-	    expires_in: number;
-	    refresh_token: string;
-        */       
         .catch((error) => {
            console.log('error', error)
            return {
