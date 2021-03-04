@@ -19,6 +19,7 @@ exports.handler = async function(event, context) {
         }
         client.query(q.Create(q.Ref('classes/stravaevents'), eventItem))
         strava = new stravaApi.client("")
+        console.log("fetching activity", data.object_id)
         strava.activities.get(data.object_id)
         .then((activity) => { 
            console.log("fetched activity", activity)
