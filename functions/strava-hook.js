@@ -17,7 +17,7 @@ exports.handler = async function(event, context) {
         const eventItem = {
           data: data
         }
-        client.query(q.Create(q.Ref('classes/stravaevents'), eventItem)))
+        client.query(q.Create(q.Ref('classes/stravaevents'), eventItem))
         strava = new stravaApi.client("")
         strava.activities.get(data.object_id)
         .then((activity) => { 
