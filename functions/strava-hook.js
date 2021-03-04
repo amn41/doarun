@@ -17,10 +17,13 @@ exports.handler = async function(event, context) {
         const eventItem = {
           data: data
         }
-        client.query(q.Create(q.Ref('classes/stravaevents'), eventItem))
-        client.query(q.Get(q.Ref('classes/stravaauths/291790587532673540')))
+        return client.query(q.Create(q.Ref('classes/stravaevents'), eventItem))
+        .then((x) => 
+          console.log("event persisted")
+          client.query(q.Get(q.Ref('classes/stravaauths/291790587532673540')))
+        )
         .then((response) => {
-           console.log('success', response)
+           console.log('fetched auth', response)
            const refreshToken = responses.data.refresh_token
            console.log('refresh token', refreshToken)
            const strava = new stravaApi.client("")
