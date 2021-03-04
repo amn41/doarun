@@ -21,6 +21,11 @@ class AuthButton extends Component {
 
 
 export default class Profile extends Component {
+    componentDidMount() {
+      api.readProfile().then((profile) => {
+        console.log('profile', profile)
+      })
+    }
     renderProfile() {
       if (this.props.isAuthenticated) {
         return (

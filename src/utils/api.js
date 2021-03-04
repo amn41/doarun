@@ -42,6 +42,13 @@ const update = (todoId, data) => {
   })
 }
 
+const readProfile = () => {
+  return fetch('/.netlify/functions/profile-read').then((response) => {
+    return response.json()
+  })
+}
+
+
 const deleteTodo = (todoId) => {
   return fetch(`/.netlify/functions/todos-delete/${todoId}`, {
     method: 'POST',
@@ -69,5 +76,6 @@ export default {
   readWeeklyLeaderboard: readWeeklyLeaderboard,
   update: update,
   delete: deleteTodo,
+  readProfile: readProfile,
   batchDelete: batchDeleteTodo
 }
