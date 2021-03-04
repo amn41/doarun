@@ -18,7 +18,7 @@ exports.handler = async function(event, context) {
           data: data
         }
         client.query(q.Create(q.Ref('classes/stravaevents'), eventItem))
-        client.query(q.Get(q.Ref('classes/stravaauths/291790587532673540')
+        client.query(q.Get(q.Ref('classes/stravaauths/291790587532673540')))
         .then((response) => {
            console.log('success', response)
            const refreshToken = responses.data.refresh_token
