@@ -43,11 +43,10 @@ exports.handler = async function(event, context) {
           console.log("fetched activity", activity)
           const activityItem = { data : activity }
 	  client.query(q.Create(q.Ref('classes/activities'), activityItem))
-             return {
-               statusCode: 200,
-               body: "ok"
-             }
-          })
+          return {
+            statusCode: 200,
+            body: "ok"
+          }
         })
         /*
 	export interface RefreshTokenResponse {
@@ -56,7 +55,7 @@ exports.handler = async function(event, context) {
 	    expires_at: number;
 	    expires_in: number;
 	    refresh_token: string;
-        */           
+        */       
         .catch((error) => {
            console.log('error', error)
            return {
