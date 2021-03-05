@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
-import './App.css'
-import Leaderboard from './Leaderboard';
-import Profile from './components/Profile';
-import netlifyIdentity from 'netlify-identity-widget';
+import Leaderboard from './containers/Leaderboard'
+import Profile from './components/Profile'
+import AppHeader from './components/AppHeader'
+import netlifyIdentity from 'netlify-identity-widget'
 import {
   HashRouter as Router,
   Route,
@@ -11,7 +11,7 @@ import {
 } from 'react-router-dom';
 
 import { ThemeProvider } from '@material-ui/core/styles'
-import theme from './theme'
+import theme from './theme/themed'
 
 
 function PrivateRoute({ component: Component, isAuthenticated, ...rest }) {
@@ -67,6 +67,7 @@ export default class App extends Component {
       return (
       <ThemeProvider theme={theme}>
           <Router>
+            <AppHeader />
             <Switch>
               <PrivateRoute exact path="/" component={Leaderboard} isAuthenticated={this.state.isAuthenticated} />
               <Route path="/profile" >

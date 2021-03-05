@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
-import AppHeader from './components/AppHeader'
-import api from './utils/api'
-import './App.css'
+import api from '../utils/api'
+
 import { groupBy, sumBy, toPairs } from 'lodash';
 
 export default class Leaderboard extends Component {
@@ -132,7 +131,6 @@ export default class Leaderboard extends Component {
   render() {
     return (
       <div className='app'>
-        <AppHeader />
 	<div className='container'>    
 	  <div className="item weekly-leaderboard-section">
 	    <h1 className='weekly-leaderboard-title'>THIS WEEK</h1> 
