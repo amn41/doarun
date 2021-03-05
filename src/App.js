@@ -11,7 +11,7 @@ import {
 } from 'react-router-dom';
 
 import { ThemeProvider } from '@material-ui/core/styles'
-import theme from './theme.tsx'
+import theme from './theme'
 
 
 function PrivateRoute({ component: Component, isAuthenticated, ...rest }) {
