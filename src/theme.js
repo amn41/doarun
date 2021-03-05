@@ -7,7 +7,7 @@ const theme = createMuiTheme({
             main: colors.nike,
         },
         secondary: {
-            main: colors.nike,
+            main: colors.adidas,
         },
         accent: {
             main: colors.mizuno,

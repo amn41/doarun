@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 import './App.css'
-import Leaderboard from './Leaderboard';
-import Profile from './components/Profile';
-import netlifyIdentity from 'netlify-identity-widget';
+import Leaderboard from './Leaderboard'
+import Profile from './components/Profile'
+import AppHeader from './components/AppHeader'
+import netlifyIdentity from 'netlify-identity-widget'
 import {
   HashRouter as Router,
   Route,
@@ -67,6 +68,7 @@ export default class App extends Component {
       return (
       <ThemeProvider theme={theme}>
           <Router>
+            <AppHeader />
             <Switch>
               <PrivateRoute exact path="/" component={Leaderboard} isAuthenticated={this.state.isAuthenticated} />
               <Route path="/profile" >
