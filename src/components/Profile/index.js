@@ -51,7 +51,7 @@ export default class Profile extends Component {
       <div>
         {this.renderProfile()}
         <div>
-          <p>{JSON.stringify(this.props.user.email)}</p>
+          <p>{JSON.stringify(this.props.user?.email)}</p>
           <AuthButton isAuthenticated={this.props.isAuthenticated} authenticate={this.props.authenticate} signout={this.props.signout}/>
         </div>
       </div>
