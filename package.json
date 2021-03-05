@@ -22,9 +22,17 @@
     "docs": "md-magic --path '**/*.md' --ignore 'node_modules'",
     "start": "react-scripts start",
     "prebuild": "echo 'setup faunaDB' && npm run bootstrap",
-    "build": "react-scripts build"
+    "build": "react-scripts build",
+    "storybook": "start-storybook -p 6006 -s public",
+    "build-storybook": "build-storybook -s public"
   },
   "devDependencies": {
+    "@storybook/addon-actions": "^6.1.21",
+    "@storybook/addon-essentials": "^6.1.21",
+    "@storybook/addon-links": "^6.1.21",
+    "@storybook/node-logger": "^6.1.21",
+    "@storybook/preset-create-react-app": "^3.1.6",
+    "@storybook/react": "^6.1.21",
     "netlify-cli": "^2.19.0"
   },
   "browserslist": [
