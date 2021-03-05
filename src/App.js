@@ -10,6 +10,9 @@ import {
   Redirect
 } from 'react-router-dom';
 
+import { ThemeProvider } from '@material-ui/core/styles'
+import theme from './theme'
+
 
 function PrivateRoute({ component: Component, isAuthenticated, ...rest }) {
   return (
@@ -62,14 +65,16 @@ export default class App extends Component {
   }
   render() {
       return (
-    	<Router>
+      <ThemeProvider theme={theme}>
+          <Router>
             <Switch>
-    	      <PrivateRoute exact path="/" component={Leaderboard} isAuthenticated={this.state.isAuthenticated} />
-    	      <Route path="/profile" >
-                <Profile isAuthenticated={this.state.isAuthenticated} user={this.state.user} authenticate={this.authenticate} signout={this.signout}/>
+              <PrivateRoute exact path="/" component={Leaderboard} isAuthenticated={this.state.isAuthenticated} />
+              <Route path="/profile" >
+                <Profile isAuthenticated={this.state.isAuthenticated} user={this.state.user} authenticate={this.authenticate} signout={this.signout} />
               </Route>
             </Switch>
-    	</Router>
+          </Router>
+      </ThemeProvider>
     )
   }
 }
