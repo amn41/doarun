@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
-import AppHeader from './components/AppHeader'
-import api from './utils/api'
-import './App.css'
+import api from '../utils/api'
+
 import { groupBy, sumBy, toPairs } from 'lodash';
 
 export default class Leaderboard extends Component {

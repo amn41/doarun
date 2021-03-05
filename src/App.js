@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
-import './App.css'
-import Leaderboard from './Leaderboard'
+import Leaderboard from './containers/Leaderboard'
 import Profile from './components/Profile'
 import AppHeader from './components/AppHeader'
 import netlifyIdentity from 'netlify-identity-widget'
@@ -12,7 +11,7 @@ import {
 } from 'react-router-dom';
 
 import { ThemeProvider } from '@material-ui/core/styles'
-import theme from './theme'
+import theme from './theme/themed'
 
 
 function PrivateRoute({ component: Component, isAuthenticated, ...rest }) {
