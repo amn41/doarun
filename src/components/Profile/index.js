@@ -23,8 +23,10 @@ class AuthButton extends Component {
 
 export default class Profile extends Component {
     componentDidMount() {
-      api.readProfile().then((profile) => {
-        console.log('profile', profile)
+      const jwt = this.props.user?.jwt().then((jwt) => {
+          return api.readProfile(jwt)
+      }).then((profile) => {
+          console.log('profile')//, JSON.stringify(profile))
       })
     }
     renderProfile() {
@@ -36,7 +38,7 @@ export default class Profile extends Component {
             <br/>
             <br/>
             <div>
-              <a href={oauthUrl}>
+              <a href={`${oauthUrl}&state=${this.props.user.email}`}>
                 <img src={stravaButton} alt='log in with strava'/>
               </a>
             </div>
@@ -51,7 +53,7 @@ export default class Profile extends Component {
       <div>
         {this.renderProfile()}
         <div>
-          <p>{JSON.stringify(this.props.user?.email)}</p>
+          <p>{this.props.user?.email}</p>
           <AuthButton isAuthenticated={this.props.isAuthenticated} authenticate={this.props.authenticate} signout={this.props.signout}/>
         </div>
       </div>

@@ -24,13 +24,15 @@ exports.handler = function (event, context) {
     secret: process.env.FAUNADB_SERVER_SECRET
   })  
   const code = event.queryStringParameters.code
-  //console.log(event.queryStringParameters.scope)
+  const email = event.queryStringParameters.state
+
   stravaApi.config({"client_id": process.env.STRAVA_CLIENT_ID, "client_secret": process.env.STRAVA_CLIENT_SECRET})
   return stravaApi.oauth.getToken(code)
   .then((payload) =>  {
     console.log("got response from requesting token")
     console.log(payload)
     const authItem = {data: payload}
+    authItem.data.email = email
     console.log(JSON.stringify(payload))
     return ( 
       client.query(q.Create(q.Ref('classes/stravaauths'), authItem))
