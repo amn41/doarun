@@ -22,13 +22,6 @@ class AuthButton extends Component {
 
 
 export default class Profile extends Component {
-    componentDidMount() {
-      const jwt = this.props.user?.jwt().then((jwt) => {
-          return api.readProfile(jwt)
-      }).then((profile) => {
-          console.log('profile')//, JSON.stringify(profile))
-      })
-    }
     renderProfile() {
       if (this.props.isAuthenticated) {
         return (
