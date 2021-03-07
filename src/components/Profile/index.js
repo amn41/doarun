@@ -22,14 +22,23 @@ class AuthButton extends Component {
 
 
 export default class Profile extends Component {
+    state = {
+      profile: null
+    }
     componentDidMount() {
       const jwt = this.props.user?.jwt().then((jwt) => {
           return api.readProfile(jwt)
       }).then((profile) => {
           console.log('profile', JSON.stringify(profile))
+          this.setState({
+            profile: profile
+          })
       })
     }
     renderProfile() {
+      const { profile } = this.state
+      const stravaLinked = profile != null && profile.strava != null
+      console.log("stravaLinked", stravaLinked)
       if (this.props.isAuthenticated) {
         return (
           <div>
@@ -38,9 +47,12 @@ export default class Profile extends Component {
             <br/>
             <br/>
             <div>
-              <a href={`${oauthUrl}&state=${this.props.user.email}`}>
-                <img src={stravaButton} alt='log in with strava'/>
-              </a>
+              { stravaLinked
+                ? <p>{`Linked strava account ${JSON.stringify(profile.strava.data.athlete.username)}`}</p> 
+              	: <a href={`${oauthUrl}&state=${this.props.user.email}`}>
+              	    <img src={stravaButton} alt='log in with strava'/>
+                  </a>
+              }
             </div>
           </div>
         )
