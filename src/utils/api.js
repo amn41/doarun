@@ -24,8 +24,9 @@ const readWeeklyLeaderboard = () => {
   })
 }    
 
-const readProfile = () => {
-  return fetch('/.netlify/functions/profile-read').then((response) => {
+const readProfile = (token) => {
+  const header = { Authorization: `Bearer ${token}` }
+  return fetch('/.netlify/functions/profile-read', {headers: header}).then((response) => {
     return response.json()
   })
 }

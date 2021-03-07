@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import stravaButton from '../../assets/btn_strava_connectwith_orange.svg'
 import { Link } from 'react-router-dom';
+import api from '../../utils/api'
 
 const oauthUrl = "https://www.strava.com/oauth/authorize?client_id=62285&response_type=code&redirect_uri=https://amazing-jang-8a41ee.netlify.app/.netlify/functions/oauth-complete&approval_prompt=force&scope=activity:read_all"
 
@@ -21,6 +22,13 @@ class AuthButton extends Component {
 
 
 export default class Profile extends Component {
+    componentDidMount() {
+      const jwt = this.props.user?.jwt().then((jwt) => {
+          return api.readProfile(jwt)
+      }).then((profile) => {
+          console.log('profile', JSON.stringify(profile))
+      })
+    }
     renderProfile() {
       if (this.props.isAuthenticated) {
         return (
