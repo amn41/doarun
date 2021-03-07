@@ -17,10 +17,11 @@ exports.handler = async function(event, context) {
         const eventItem = {
           data: data
         }
+        const athlete = data.owner_id
         return client.query(q.Create(q.Ref('classes/stravaevents'), eventItem))
         .then((x) =>  {
           console.log("event persisted")
-          return client.query(q.Get(q.Ref('classes/stravaauths/291790587532673540')))
+          return client.query(q.Get(q.Match(q.Index('auths_by_athlete'), athlete)))
         })
         .then((response) => {
            console.log('fetched auth', response)
@@ -33,8 +34,9 @@ exports.handler = async function(event, context) {
            console.log(response)
            const { access_token, refresh_token } = response
            console.log("new access token", access_token)
-           client.query(q.Update(q.Ref('classes/stravaauths/291790587532673540'), 
-                                 {data: { access_token: access_token, refresh_token: refresh_token }}
+           client.query(q.Update(
+                          q.Select(['ref'], q.Get(q.Match(q.Index('auths_by_athlete'), athlete))), 
+                          {data: { access_token: access_token, refresh_token: refresh_token }}
                         ))
            return new stravaApi.client(access_token)
         })
