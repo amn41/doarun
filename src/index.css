@@ -128,3 +128,28 @@ td {
     font-size: 80px;
     color: #222;
 }
+
+.profile-card {
+    margin: 40px 40px 40px 100px;
+    max-width: 700px;
+}
+
+.profile-card a {
+    text-decoration: none;
+    font-family: "Bangers";
+    font-size: 40px;
+    color: #222;
+}
+
+.profile-card button {
+    text-decoration: none;
+    font-family: "Bangers";
+    font-size: 30px;
+    color: #222;
+    border: none;
+    box-shadow: none;
+}
+
+.strava-name {
+    font-weight: bold;
+}

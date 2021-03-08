@@ -50,7 +50,9 @@ export default class Profile extends Component {
             <br/>
             <div>
               { stravaLinked
-                ? <p>{`Linked strava account ${JSON.stringify(profile.strava.data.athlete.username)}`}</p> 
+                ? <p>{"You have connected your Strava account "}
+                    <span className="strava-name">{profile.strava.data.athlete.firstname} {profile.strava.data.athlete.lastname}</span>
+                  </p> 
               	: <a href={`${oauthUrl}&state=${this.props.user.email}`}>
               	    <img src={stravaButton} alt='log in with strava'/>
                   </a>
@@ -64,10 +66,10 @@ export default class Profile extends Component {
     }
     render() {
       return (
-      <div>
+      <div className="profile-card">
         {this.renderProfile()}
         <div>
-          <p>{this.props.user?.email}</p>
+          <p>You are signed in as {this.props.user?.email}</p>
           <AuthButton isAuthenticated={this.props.isAuthenticated} authenticate={this.props.authenticate} signout={this.props.signout}/>
         </div>
       </div>
