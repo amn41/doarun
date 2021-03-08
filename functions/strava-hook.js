@@ -40,7 +40,8 @@ function fetchActivity(client, eventData) {
     .then((activity) => { 
       console.log("fetched activity", activity)
       const activityItem = { data : activity }
-      client.query(q.Create(q.Ref('classes/activities'), activityItem))
+      return client.query(q.Create(q.Ref('classes/activities'), activityItem))
+    }).then(() => {
       return {
         statusCode: 200,
         body: "ok"
