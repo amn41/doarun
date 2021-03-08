@@ -41,38 +41,44 @@ export default class Profile extends Component {
       const { profile } = this.state
       const stravaLinked = profile != null && profile.strava != null
       console.log("stravaLinked", stravaLinked)
+      if (!profile) {
+        return null
+      }
       if (this.props.isAuthenticated) {
-        return (
-          <div>
-            <br/>
-            <Link to="/">View Leaderboard</Link>
-            <br/>
-            <br/>
-            <div>
-              { stravaLinked
-                ? <p>{"You have connected your Strava account "}
-                    <span className="strava-name">{profile.strava.data.athlete.firstname} {profile.strava.data.athlete.lastname}</span>
-                  </p> 
-              	: <a href={`${oauthUrl}&state=${this.props.user.email}`}>
-              	    <img src={stravaButton} alt='log in with strava'/>
-                  </a>
-              }
-            </div>
-          </div>
-        )
+        if (stravaLinked) {
+            return (
+              <p>{"You have connected your Strava account "}
+                <span className="strava-name">{profile.strava.data.athlete.firstname} {profile.strava.data.athlete.lastname}</span>
+              </p>
+            )
+        } else {
+            return (
+              <a href={`${oauthUrl}&state=${this.props.user.email}`}>
+                <img src={stravaButton} alt='log in with strava'/>
+              </a>
+            )
+        }
       } else {
         return (null)
       }
     }
     render() {
       return (
-      <div className="profile-card">
-        {this.renderProfile()}
-        <div>
-          <p>You are signed in as {this.props.user?.email}</p>
-          <AuthButton isAuthenticated={this.props.isAuthenticated} authenticate={this.props.authenticate} signout={this.props.signout}/>
+        <div className="profile-card">
+          <div>
+            <br/>
+            <Link to="/">View Leaderboard</Link>
+            <br/>
+            <br/>
+            <div>
+              {this.renderProfile()}
+            </div>
+          </div>
+          <div>
+            <p>You are signed in as {this.props.user?.email}</p>
+            <AuthButton isAuthenticated={this.props.isAuthenticated} authenticate={this.props.authenticate} signout={this.props.signout}/>
+          </div>
         </div>
-      </div>
     )
   }
 }
