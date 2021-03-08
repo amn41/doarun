@@ -116,3 +116,15 @@ td {
 .avatar {
     width: 60px;
 }
+
+.latest-activity {
+    font-family: "Bangers";
+    font-size: 180px;
+    color: #222;
+}
+
+.latest-activity-placeholder {
+    font-family: "Bangers";
+    font-size: 80px;
+    color: #222;
+}

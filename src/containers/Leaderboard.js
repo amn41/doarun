@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import api from '../utils/api'
 import isLocalHost from '../utils/isLocalHost'
 
-import { groupBy, orderBy, sumBy, toPairs, find, partition } from 'lodash';
+import { groupBy, orderBy, sumBy, maxBy, toPairs, find, partition } from 'lodash';
 
 
 export default class Leaderboard extends Component {
@@ -36,15 +36,26 @@ export default class Leaderboard extends Component {
     return ((Math.round(distance * 10) / 10).toString() + " km")
   }
   renderLatestActivity() {
-    const { activities } = this.state
+    const { activities, athletes } = this.state
     if (!activities || !activities.length) {
-      // Loading State here
-      return null
-    }
-    const latest = maxBy(activities, ((a) => a.data.start_date))
       return (
       <div>
+        <h1 className='leaderboard-title'>NO ONE HAS RUN YET</h1> 
+        <div className='latest-activity-placeholder'>
+         WHAT ARE YOU WAITING FOR?
+        </div>
+      </div>
+      )
+    }
+    const latest = maxBy(activities, ((a) => a.data.start_date))
+    const athlete = find(athletes, ((u) => u.id == latest.data.athlete.id)) // eslint-disable-line
+    const title = `LATEST RUN: ${athlete.firstname}`
+      return (
+      <div>
+        <h1 className='leaderboard-title'>{title}</h1> 
+        <div className='latest-activity'>
          {this.renderDistance(latest.data.distance/1000)}
+        </div>
       </div>
       )
   }
@@ -129,10 +140,7 @@ export default class Leaderboard extends Component {
             </div>
           </div>
           <div className="item latest-run-section">
-            <h1 className='leaderboard-title'>LATEST RUN: BRIAN</h1> 
-            <div className='activity-list'>
-              {this.renderLatestActivity()}
-            </div>
+            {this.renderLatestActivity()}
           </div>
         </div>
       </div>
