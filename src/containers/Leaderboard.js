@@ -7,13 +7,6 @@ import { groupBy, orderBy, sumBy, toPairs, find, partition } from 'lodash';
 
 export default class Leaderboard extends Component {
   state = {
-      latestActivity: {
-        "athlete": "Alan Nichol",
-        "distance": 1000,
-        "id": 4861036852,
-        "start_date": "2021-02-27T18:50:00Z",
-        "start_date_local": "2021-02-27T18:50:00Z",
-      },
       athletes: [],
       targetDistance: 10,
       activities: []
@@ -43,14 +36,15 @@ export default class Leaderboard extends Component {
     return ((Math.round(distance * 10) / 10).toString() + " km")
   }
   renderLatestActivity() {
-    const { latestActivity } = this.state
-    if (!latestActivity) {
+    const { activities } = this.state
+    if (!activities || !activities.length) {
       // Loading State here
       return null
     }
+    const latest = maxBy(activities, ((a) => a.data.start_date))
       return (
       <div>
-         {this.renderDistance(latestActivity.distance/1000)}
+         {this.renderDistance(latest.data.distance/1000)}
       </div>
       )
   }
