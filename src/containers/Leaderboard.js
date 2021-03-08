@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import api from '../utils/api'
 
-import { groupBy, sumBy, toPairs } from 'lodash';
+import { groupBy, orderBy, sumBy, toPairs, find, partition } from 'lodash';
 
 export default class Leaderboard extends Component {
   state = {
@@ -12,17 +12,13 @@ export default class Leaderboard extends Component {
         "start_date": "2021-02-27T18:50:00Z",
         "start_date_local": "2021-02-27T18:50:00Z",
       },
-      athletes: {
-        "296399" : "Alan Nichol",
-        "0": "Brian Daly",
-      },
+      athletes: [],
+      targetDistance: 10,
       activities: []
   }
   componentDidMount() {
-    // Fetch data
-    /*
-    api.readLatestActivity().then((latestActivity) => {
-      if (latestActivity.message === 'unauthorized') {
+    api.readAllAthletes().then((athletes) => {
+      if (athletes.message === 'unauthorized') {
         if (isLocalHost()) {
           alert('FaunaDB key is not authorized. Make sure you set it in terminal session where you ran `npm start`. Visit http://bit.ly/set-fauna-key for more info')
         } else {
@@ -30,18 +26,11 @@ export default class Leaderboard extends Component {
         }
         return false
       }
-
-      console.log('latest activity', latestActivity)
+      //console.log('latest activity', latestActivity)
       this.setState({
-        latestActivity: latestActivity
+        athletes: athletes
       })
     })
-    api.readWeeklyLeaderboard().then((leaderboard) => {
-      console.log('weeklyleaderboard', leaderboard)
-      this.setState({
-        weeklyLeaderboard: leaderboard
-      })
-    })*/
     api.readAll().then((activities) => {
       console.log('activites', activities)
       this.setState({
@@ -50,7 +39,7 @@ export default class Leaderboard extends Component {
     })
   }
   renderDistance(distance) {
-    return ((distance).toString() + " km")
+    return ((Math.round(distance * 10) / 10).toString() + " km")
   }
   renderLatestActivity() {
     const { latestActivity } = this.state
@@ -73,13 +62,13 @@ export default class Leaderboard extends Component {
 
       return athletes.map((athlete, index) => {
 	  const position = (index + 1 + offset).toString() + "."
-       
+          console.log(JSON.stringify(athlete))
        return (
          <tr key={index}>
             <td><span className="position">{position}</span></td>
-            <td><img alt="profile" className="avatar" src="https://dgalywyr863hv.cloudfront.net/pictures/athletes/296399/461322/2/medium.jpg"/></td>
+            <td><img alt="profile" className="avatar" src={athlete.profile_medium}/></td>
             <td>
-	       <p className="athlete-name">{athlete.name}</p>
+	       <p className="athlete-name">{`${athlete.firstname} ${athlete.lastname}`}</p>
 	       <p className="athlete-distance">{this.renderDistance(athlete.distance)}</p>
             </td>
             <td></td>
@@ -107,23 +96,27 @@ export default class Leaderboard extends Component {
     const grouped = groupBy(activities,((a) => a.data.athlete.id))
     const pairs = toPairs(grouped)
     const totals = pairs.map(pair => { 
-                     return  { 
-                       "name": athletes[pair[0]],
-                       "distance": sumBy(pair[1], ((a) => a.data.distance )) / 1000
-                     }})
-    return totals
+                     const athlete = find(athletes, ((u) => u.id == pair[0]))
+                     if ( athlete != null ) {
+                       athlete.distance = sumBy(pair[1], ((a) => a.data.distance )) / 1000
+                     }
+                     return (athlete)
+                   })
+    return orderBy(totals, ['distance'], ['desc'])
   }
   renderWeeklyLeaderboard() {
+    const { targetDistance } = this.state
     const weeklyLeaderboard = this.calculateWeeklyLeaderboard()
+    const [above, below] = partition(weeklyLeaderboard, ((a) => a.distance > targetDistance))
     return (
       <table id='weekly-leaderboard'>
         <tbody>
-          {this.renderPartialLeaderboardTable(weeklyLeaderboard.slice(0,1),0)}
+          {this.renderPartialLeaderboardTable(above,0)}
   	  {this.renderPaceMaker()}
           <tr className="pacemaker-row">
             <td colSpan="4"><hr className="pacemaker-line"/></td>
           </tr>
-          {this.renderPartialLeaderboardTable(weeklyLeaderboard.slice(2,10),2)}
+          {this.renderPartialLeaderboardTable(below,above.length)}
         </tbody>
       </table>
     )

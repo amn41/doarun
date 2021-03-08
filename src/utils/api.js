@@ -6,6 +6,12 @@ const readAll = () => {
   })
 }
 
+const readAllAthletes = () => {
+  return fetch('/.netlify/functions/athletes-read-all').then((response) => {
+    return response.json()
+  })
+}
+
 const readLatestActivity = () => {
   return fetch('/.netlify/functions/activities-read-latest').then((response) => {
     return response.json()
@@ -34,6 +40,7 @@ const readProfile = (token) => {
 
 export default {
   readAll: readAll,
+  readAllAthletes: readAllAthletes,
   readLatestActivity: readLatestActivity,
   readLeaderboard: readLeaderboard,
   readWeeklyLeaderboard: readWeeklyLeaderboard,
