@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import api from '../utils/api'
+import isLocalHost from '../utils/isLocalHost'
 
 import { groupBy, orderBy, sumBy, toPairs, find, partition } from 'lodash';
 
@@ -26,7 +27,6 @@ export default class Leaderboard extends Component {
         }
         return false
       }
-      //console.log('latest activity', latestActivity)
       this.setState({
         athletes: athletes
       })
