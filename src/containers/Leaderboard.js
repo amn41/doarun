@@ -28,7 +28,7 @@ export default class Leaderboard extends Component {
     api.readAll().then((activities) => {
       console.log('activites', activities)
       this.setState({
-        activities: activities
+        activities: activities.data
       })
     })
   }
