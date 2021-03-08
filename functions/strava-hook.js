@@ -5,54 +5,62 @@ const stravaApi = require('strava-v3')
 
 const STRAVA_API = "https://www.strava.com/api/v3/activities/";
 
+function fetchActivity(client, eventData) {
+    if ( eventData.aspect_type != 'create' ) {
+      console.log("not a creation invent, aspect_type: ", eventData.aspect_type)
+      return {
+        statusCode: 200,
+        body: "ok"
+      }
+    }
+    const athlete = eventData.owner_id
+    console.log("new activity created, fetching")
+    return client.query(q.Get(q.Match(q.Index('auths_by_athlete'), athlete)))
+    .then((response) => {
+       console.log('fetched auth', response)
+       const refreshToken = response.data.refresh_token
+       console.log('refresh token', refreshToken)
+       //const strava = new stravaApi.client("")
+       return stravaApi.oauth.refreshToken(refreshToken)
+    })
+    .then((response) => {
+       console.log(response)
+       const { access_token, refresh_token } = response
+       console.log("new access token", access_token)
+       client.query(q.Update(
+                      q.Select(['ref'], q.Get(q.Match(q.Index('auths_by_athlete'), athlete))), 
+                      {data: { access_token: access_token, refresh_token: refresh_token }}
+                    ))
+       return new stravaApi.client(access_token)
+    })
+    .then((strava) => {
+      console.log("fetching activity", data.object_id)
+      return strava.activities.get({id: data.object_id})
+    })
+    .then((activity) => { 
+      console.log("fetched activity", activity)
+      const activityItem = { data : activity }
+      client.query(q.Create(q.Ref('classes/activities'), activityItem))
+      return {
+        statusCode: 200,
+        body: "ok"
+      }
+    })
+}
+
 exports.handler = async function(event, context) {
 
     if (event.httpMethod == "POST") {
         const client = new faunadb.Client({
           secret: process.env.FAUNADB_SERVER_SECRET
         })  
-        /* parse the string body into a useable JS object */
         const data = JSON.parse(event.body)
         console.log('Strava event hook received', data)
         const eventItem = {
           data: data
         }
-        const athlete = data.owner_id
         return client.query(q.Create(q.Ref('classes/stravaevents'), eventItem))
-        .then((x) =>  {
-          console.log("event persisted")
-          return client.query(q.Get(q.Match(q.Index('auths_by_athlete'), athlete)))
-        })
-        .then((response) => {
-           console.log('fetched auth', response)
-           const refreshToken = response.data.refresh_token
-           console.log('refresh token', refreshToken)
-           //const strava = new stravaApi.client("")
-           return stravaApi.oauth.refreshToken(refreshToken)
-        })
-        .then((response) => {
-           console.log(response)
-           const { access_token, refresh_token } = response
-           console.log("new access token", access_token)
-           client.query(q.Update(
-                          q.Select(['ref'], q.Get(q.Match(q.Index('auths_by_athlete'), athlete))), 
-                          {data: { access_token: access_token, refresh_token: refresh_token }}
-                        ))
-           return new stravaApi.client(access_token)
-        })
-        .then((strava) => {
-          console.log("fetching activity", data.object_id)
-          return strava.activities.get({id: data.object_id})
-        })
-        .then((activity) => { 
-          console.log("fetched activity", activity)
-          const activityItem = { data : activity }
-	  client.query(q.Create(q.Ref('classes/activities'), activityItem))
-          return {
-            statusCode: 200,
-            body: "ok"
-          }
-        })
+        .then(() => fetchActivity(client, data))
         .catch((error) => {
            console.log('error', error)
            return {
