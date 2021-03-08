@@ -34,8 +34,8 @@ function fetchActivity(client, eventData) {
        return new stravaApi.client(access_token)
     })
     .then((strava) => {
-      console.log("fetching activity", data.object_id)
-      return strava.activities.get({id: data.object_id})
+      console.log("fetching activity", eventData.object_id)
+      return strava.activities.get({id: eventData.object_id})
     })
     .then((activity) => { 
       console.log("fetched activity", activity)
