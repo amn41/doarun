@@ -26,7 +26,7 @@ export default class Profile extends Component {
       profile: null
     }
     componentDidMount() {
-      const jwt = this.props.user?.jwt().then((jwt) => {
+      this.props.user?.jwt().then((jwt) => {
           return api.readProfile(jwt)
       }).then((profile) => {
           console.log('profile', JSON.stringify(profile))
