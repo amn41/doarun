@@ -96,7 +96,7 @@ export default class Leaderboard extends Component {
     const grouped = groupBy(activities,((a) => a.data.athlete.id))
     const pairs = toPairs(grouped)
     const totals = pairs.map(pair => { 
-                     const athlete = find(athletes, ((u) => u.id === pair[0]))
+                     const athlete = find(athletes, ((u) => u.id == pair[0]))
                      if ( athlete != null ) {
                        athlete.distance = sumBy(pair[1], ((a) => a.data.distance )) / 1000
                      }
