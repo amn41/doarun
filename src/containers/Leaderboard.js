@@ -95,7 +95,9 @@ export default class Leaderboard extends Component {
   calculateWeeklyLeaderboard() {
     const { activities, athletes } = this.state
     const grouped = groupBy(activities,((a) => a.data.athlete.id))
+    console.log("grouped", grouped)
     const pairs = toPairs(grouped)
+    console.log("pairs", pairs)
     const totals = pairs.map(pair => { 
                      const athlete = find(athletes, ((u) => u.id == pair[0])) // eslint-disable-line
                      if ( athlete != null ) {
