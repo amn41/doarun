@@ -4,6 +4,7 @@ import isLocalHost from '../utils/isLocalHost'
 
 import { groupBy, orderBy, sumBy, toPairs, find, partition } from 'lodash';
 
+
 export default class Leaderboard extends Component {
   state = {
       latestActivity: {
@@ -96,7 +97,7 @@ export default class Leaderboard extends Component {
     const grouped = groupBy(activities,((a) => a.data.athlete.id))
     const pairs = toPairs(grouped)
     const totals = pairs.map(pair => { 
-                     const athlete = find(athletes, ((u) => u.id == pair[0]))
+                     const athlete = find(athletes, ((u) => u.id == pair[0])) // eslint-disable-line
                      if ( athlete != null ) {
                        athlete.distance = sumBy(pair[1], ((a) => a.data.distance )) / 1000
                      }
