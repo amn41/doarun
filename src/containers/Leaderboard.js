@@ -9,7 +9,7 @@ export default class Leaderboard extends Component {
   state = {
       athletes: [],
       targetDistance: 10,
-      activities: []
+      activities: null
   }
   componentDidMount() {
     api.readAllAthletes().then((athletes) => {
@@ -37,7 +37,10 @@ export default class Leaderboard extends Component {
   }
   renderLatestActivity() {
     const { activities, athletes } = this.state
-    if (!activities || !activities.length) {
+    if (!activities) {
+      return null;
+    }
+    if (!activities.length) {
       return (
       <div>
         <h1 className='leaderboard-title'>NO ONE HAS RUN YET</h1> 
