@@ -67,7 +67,7 @@ export default class Profile extends Component {
         <div className="profile-card">
           <div>
             <br/>
-            <Link to="/">View Leaderboard</Link>
+            {this.props.user ? <Link to="/">View Leaderboard</Link> : null}
             <br/>
             <br/>
             <div>
@@ -75,7 +75,7 @@ export default class Profile extends Component {
             </div>
           </div>
           <div>
-            <p>You are signed in as {this.props.user?.email}</p>
+            {this.props.user ? <p>You are signed in as {this.props.user?.email}</p> : null}
             <AuthButton isAuthenticated={this.props.isAuthenticated} authenticate={this.props.authenticate} signout={this.props.signout}/>
           </div>
         </div>
