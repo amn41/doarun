@@ -117,14 +117,14 @@ export const Leaderboard: React.FC = () => {
   }
 
   const calculateWeeklyLeaderboard = () => {
-    const grouped = groupBy(activities, ((a: any) => a.data.athlete.id))
+    const grouped = groupBy(activities, ((a: any) => a.athlete.id))
     console.log("grouped", grouped)
     const pairs = toPairs(grouped)
     console.log("pairs", pairs)
     const totals = pairs.map((pair: any) => {
       const athlete = find(athletes, ((u: any) => u.id == pair[0])) // eslint-disable-line
-      if (athlete !== null) {
-        athlete.distance = sumBy(pair[1], ((a: any) => a.data.distance)) / 1000
+      if (athlete) {
+        athlete.distance = sumBy(pair[1], ((a: any) => a.distance)) / 1000
       }
       return (athlete)
     })
