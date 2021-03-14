@@ -1,17 +1,46 @@
 import React, { Fragment, useEffect, useState} from 'react'
 import api from '../utils/api'
 import isLocalHost from '../utils/isLocalHost'
-
 import { groupBy, orderBy, sumBy, maxBy, toPairs, find, partition } from 'lodash'
+
+import { Grid, Table, TableBody, TableRow, TableCell, Typography, Avatar} from '@material-ui/core'
 import { fonts } from '../theme/fonts'
 import { withStyles } from '@material-ui/core/styles'
+import { colors } from '../theme/colors'
+import { styled } from '@material-ui/core/styles';
+import theme from '../theme/themed'
 
-const StyledLeaderboard = withStyles({
+const StyledLeaderboard = styled('div')({
+  width: '100%',
+  fontFamily: fonts.main,
+})
+
+const StyledTypography = withStyles({
   root: {
-    width: '100%',
+    color: colors.mizuno,
     fontFamily: fonts.main,
   },
-})(Fragment)
+})(Typography)
+
+const MuiTableCell = withStyles({
+  root: {
+    borderBottom: "none",
+  }
+})(TableCell)
+
+const TableCellNoPadding = withStyles({
+  root: {
+    borderBottom: "none",
+    padding: 0,
+  }
+})(TableCell)
+
+const StyledAvatar = withStyles({
+  root: {
+    height: theme.spacing(7),
+    width: theme.spacing(7),
+  },
+})(Avatar)
 
 
 export const Leaderboard: React.FC = () => {
@@ -54,15 +83,15 @@ export const Leaderboard: React.FC = () => {
 
   const renderLatestActivity = () => {
     if (!activities) {
-      return null
+      return
     }
     return (
-      <div>
+      <>
         <h1>{latestAthlete ? `LATEST RUN: ${latestAthlete.firstname}` : 'NO ONE HAS RUN YET'}</h1>
-        <div>
-          {latestActivity ? renderDistance(latestActivity?.distance / 1000) : "WHAT ARE YOU WAITING FOR?"}
-        </div>
-      </div>
+        <>
+          {latestActivity ? renderDistance(latestActivity?.distance / 1000) : 'WHAT ARE YOU WAITING FOR?'}
+        </>
+      </>
     )
   }
 
@@ -72,31 +101,19 @@ export const Leaderboard: React.FC = () => {
         const position = (index + 1 + offset).toString() + "."
         console.log(JSON.stringify(athlete))
         return (
-          <tr key={index}>
-            <td>{position}</td>
-            <td><img alt="profile" src={athlete.profile_medium} /></td>
-            <td>
+          <TableRow key={index}>
+            <MuiTableCell><StyledTypography variant={"h4"}>{position}</StyledTypography></MuiTableCell>
+            <MuiTableCell><StyledAvatar alt="profile" src={athlete.profile_medium} /></MuiTableCell>
+            <MuiTableCell>
               <p>{`${athlete.firstname} ${athlete.lastname}`}</p>
               <p>{renderDistance(athlete.distance)}</p>
-            </td>
-            <td></td>
-          </tr>
+            </MuiTableCell>
+            <MuiTableCell></MuiTableCell>
+          </TableRow>
         )
       })
     }
     return
-  }
-
-  const renderPaceMaker = () => {
-    return (
-      <tr>
-        <td>
-          <h1>
-            <span>{targetDistance} KM TARGET </span>
-          </h1>
-        </td>
-      </tr>
-    )
   }
 
   const calculateWeeklyLeaderboard = () => {
@@ -118,24 +135,37 @@ export const Leaderboard: React.FC = () => {
     const weeklyLeaderboard = calculateWeeklyLeaderboard()
     const [above, below] = partition(weeklyLeaderboard, ((a: any) => a.distance > targetDistance))
     return (
-      <table id='weekly-leaderboard'>
-        <tbody>
+      <>
+      <h1>THIS WEEK</h1>
+      <Table>
+        <TableBody>
           {renderPartialLeaderboardTable(above, 0)}
-          {renderPaceMaker()}
-          <tr>
-            <td colSpan={4}><hr/></td>
-          </tr>
+          <TableRow>
+            <TableCellNoPadding colSpan={3}/>
+            <TableCellNoPadding>
+                <StyledTypography variant={"h5"}>{targetDistance} KM TARGET</StyledTypography>
+            </TableCellNoPadding>
+          </TableRow>
+          <TableRow>
+              <TableCellNoPadding colSpan={4}><hr color={colors.mizuno} /></TableCellNoPadding>
+          </TableRow>
           {renderPartialLeaderboardTable(below, above.length)}
-        </tbody>
-      </table>
+        </TableBody>
+      </Table>
+      </>
     )
   }
 
   return (
     <StyledLeaderboard>
-      <h1>THIS WEEK</h1>
-      {renderWeeklyLeaderboard()}
-      {renderLatestActivity()}
+      <Grid container justify='space-around'>
+        <Grid item>
+          {renderWeeklyLeaderboard()}
+        </Grid>
+        <Grid item>
+          {renderLatestActivity()}
+        </Grid>
+      </Grid>
     </StyledLeaderboard>
   )
 }
