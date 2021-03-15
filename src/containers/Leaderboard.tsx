@@ -49,7 +49,7 @@ export const Leaderboard: React.FC = () => {
   const [latestAthlete, setLatestAthlete] = useState<any>(null)
   const [activities, setActivities] = useState([])
   const [latestActivity, setLatestActivity] = useState<any>(null)
-  const lazyAthletes = activities.length > 0
+  const lazyAthletes: object[] = activities.length > 0
     ? athletes.filter((a: any) => activities.some((activitiy: any) => activitiy.athlete.id !== a.id)) 
     : athletes
 
@@ -119,7 +119,7 @@ export const Leaderboard: React.FC = () => {
     return
   }
 
-  const renderLazyAthletes = (lazyAthletes: object[]) => {
+  const renderLazyAthletes = () => {
     if (lazyAthletes?.length > 0) {
       return lazyAthletes.map((athlete: any, index: number) => {
         return (
@@ -156,7 +156,6 @@ export const Leaderboard: React.FC = () => {
   const renderWeeklyLeaderboard = () => {
     const weeklyLeaderboard = calculateWeeklyLeaderboard()
     const [above, below] = partition(weeklyLeaderboard, ((a: any) => a.distance > targetDistance))
-    const lazyAthletes = athletes.filter((a: any) => activities.some((activitiy: any) => activitiy.athlete.id !== a.id))
     return (
       <>
       <h1>THIS WEEK</h1>
@@ -173,7 +172,7 @@ export const Leaderboard: React.FC = () => {
               <TableCellNoPadding colSpan={4}><hr color={colors.mizuno} /></TableCellNoPadding>
           </TableRow>
             {renderPartialLeaderboardTable(below, above.length)}
-            {renderLazyAthletes(lazyAthletes)}
+            {renderLazyAthletes()}
         </TableBody>
       </Table>
       </>
