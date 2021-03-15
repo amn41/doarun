@@ -116,6 +116,25 @@ export const Leaderboard: React.FC = () => {
     return
   }
 
+  const renderLazyAthletes = (lazyAthletes: object[]) => {
+    if (lazyAthletes?.length > 0) {
+      return lazyAthletes.map((athlete: any, index: number) => {
+        return (
+        <TableRow key={index}>
+            <MuiTableCell><StyledTypography variant={"h4"}>&#128564;</StyledTypography></MuiTableCell>
+          <MuiTableCell><StyledAvatar alt="profile" src={athlete.profile_medium} /></MuiTableCell>
+          <MuiTableCell>
+            <p>{`${athlete.firstname} ${athlete.lastname}`}</p>
+            <p>0 km</p>
+          </MuiTableCell>
+          <MuiTableCell></MuiTableCell>
+        </TableRow>
+      )
+      })
+    }
+    return
+  }
+
   const calculateWeeklyLeaderboard = () => {
     const grouped = groupBy(activities, ((a: any) => a.athlete.id))
     console.log("grouped", grouped)
@@ -134,6 +153,7 @@ export const Leaderboard: React.FC = () => {
   const renderWeeklyLeaderboard = () => {
     const weeklyLeaderboard = calculateWeeklyLeaderboard()
     const [above, below] = partition(weeklyLeaderboard, ((a: any) => a.distance > targetDistance))
+    const lazyAthletes = athletes.filter((a: any) => activities.some((activitiy: any) => activitiy.athlete.id !== a.id))
     return (
       <>
       <h1>THIS WEEK</h1>
@@ -149,7 +169,8 @@ export const Leaderboard: React.FC = () => {
           <TableRow>
               <TableCellNoPadding colSpan={4}><hr color={colors.mizuno} /></TableCellNoPadding>
           </TableRow>
-          {renderPartialLeaderboardTable(below, above.length)}
+            {renderPartialLeaderboardTable(below, above.length)}
+            {renderLazyAthletes(lazyAthletes)}
         </TableBody>
       </Table>
       </>
