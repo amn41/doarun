@@ -49,6 +49,9 @@ export const Leaderboard: React.FC = () => {
   const [latestAthlete, setLatestAthlete] = useState<any>(null)
   const [activities, setActivities] = useState([])
   const [latestActivity, setLatestActivity] = useState<any>(null)
+  const lazyAthletes = activities.length > 0
+    ? athletes.filter((a: any) => activities.some((activitiy: any) => activitiy.athlete.id !== a.id)) 
+    : athletes
 
   useEffect(() => {
     if (activities?.length > 0) {
