@@ -86,7 +86,7 @@ export const Leaderboard: React.FC = () => {
         setActivities(activities.data)
       })
     }
-  }, [athletes])
+  })
 
   const renderDistance = (distance: number) => {
     return ((Math.round(distance * 10) / 10).toString() + " km")
@@ -124,7 +124,7 @@ export const Leaderboard: React.FC = () => {
             </TableRow>
           )
         }
-        return
+        return null
       })
     }
     return
