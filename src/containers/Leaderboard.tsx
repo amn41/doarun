@@ -155,7 +155,7 @@ export const Leaderboard: React.FC = () => {
   const renderWeeklyLeaderboard = () => {
     const weeklyLeaderboard = calculateWeeklyLeaderboard()
     console.log("weekly leaderboard", weeklyLeaderboard)
-    const [above, below] = partition(weeklyLeaderboard, ((a: any) => a.distance > targetDistance))
+    const [above, below] = partition(weeklyLeaderboard, ((a: any) => a && a.distance > targetDistance))
     return (
       <>
       <h1>THIS WEEK</h1>
