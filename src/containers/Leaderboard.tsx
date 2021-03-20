@@ -63,21 +63,30 @@ export const Leaderboard: React.FC = () => {
   }, [activities, athletes, latestActivity, latestAthlete,])
 
   
-  api.readAllAthletes().then((athletes) => {
-    if (athletes.message === 'unauthorized') {
-      if (isLocalHost()) {
-        alert('FaunaDB key is not authorized. Make sure you set it in terminal session where you ran `npm start`. Visit http://bit.ly/set-fauna-key for more info')
-      } else {
-        alert('FaunaDB key is not authorized. Verify the key `FAUNADB_SERVER_SECRET` set in Netlify enviroment variables is correct')
-      }
-      return false
+  useEffect(() => {
+    if (athletes === []) {
+      api.readAllAthletes().then((athletes) => {
+        if (athletes.message === 'unauthorized') {
+          if (isLocalHost()) {
+            alert('FaunaDB key is not authorized. Make sure you set it in terminal session where you ran `npm start`. Visit http://bit.ly/set-fauna-key for more info')
+          } else {
+            alert('FaunaDB key is not authorized. Verify the key `FAUNADB_SERVER_SECRET` set in Netlify enviroment variables is correct')
+          }
+          return false
+        }
+        setAthletes(athletes)
+      })
     }
-    setAthletes(athletes)
   })
-  api.readAll().then((activities) => {
-    console.log('activites', activities)
-    setActivities(activities.data)
-  })
+
+  useEffect(() => {
+    if (activities === []) {
+      api.readAll().then((activities) => {
+        console.log('activites', activities)
+        setActivities(activities.data)
+      })
+    }
+  }, [athletes])
 
   const renderDistance = (distance: number) => {
     return ((Math.round(distance * 10) / 10).toString() + " km")
@@ -142,9 +151,7 @@ export const Leaderboard: React.FC = () => {
 
   const calculateWeeklyLeaderboard = () => {
     const grouped = groupBy(activities, ((a: any) => a.data.athlete.id))
-    console.log("grouped", grouped)
     const pairs = toPairs(grouped)
-    console.log("pairs", pairs)
     const totals = pairs.map((pair: any) => {
       const athlete = find(athletes, ((u: any) => u.id == pair[0])) // eslint-disable-line
       if (athlete) {
@@ -186,7 +193,6 @@ export const Leaderboard: React.FC = () => {
     <StyledLeaderboard>
       <Grid container justify='space-around'>
         <Grid item>
-          {console.log("I'M DEPLOYED")}
           {renderWeeklyLeaderboard()}
         </Grid>
         <Grid item>
