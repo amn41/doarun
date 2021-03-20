@@ -119,7 +119,7 @@ export const Leaderboard: React.FC = () => {
   }
 
   const renderLazyAthletes = () => {
-    if (lazyAthletes?.length > 0) {
+    if (athletes && lazyAthletes?.length > 0) {
       return lazyAthletes.map((athlete: any, index: number) => {
         return (
         <TableRow key={index}>
