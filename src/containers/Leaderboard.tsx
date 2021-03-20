@@ -183,6 +183,7 @@ export const Leaderboard: React.FC = () => {
     <StyledLeaderboard>
       <Grid container justify='space-around'>
         <Grid item>
+          {console.log("I'M DEPLOYED")}
           {renderWeeklyLeaderboard()}
         </Grid>
         <Grid item>
