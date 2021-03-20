@@ -77,7 +77,7 @@ export const Leaderboard: React.FC = () => {
         setAthletes(athletes)
       })
     }
-  })
+  }, [athletes])
 
   useEffect(() => {
     if (activities.length === 0 && lazyAthletes?.length === 0) {
