@@ -91,7 +91,7 @@ export const Leaderboard: React.FC = () => {
       <>
         <h1>{latestAthlete ? `LATEST RUN: ${latestAthlete.firstname}` : 'NO ONE HAS RUN YET'}</h1>
         <>
-          {latestActivity ? renderDistance(latestActivity?.distance / 1000) : 'WHAT ARE YOU WAITING FOR?'}
+          {latestActivity ? renderDistance(latestActivity.distance / 1000) : 'WHAT ARE YOU WAITING FOR?'}
         </>
       </>
     )
@@ -102,17 +102,20 @@ export const Leaderboard: React.FC = () => {
       return leaders.map((athlete: any, index: number) => {
         const position = (index + 1 + offset).toString() + "."
         console.log(JSON.stringify(athlete))
-        return (
-          <TableRow key={index}>
-            <MuiTableCell><StyledTypography variant={"h4"}>{position}</StyledTypography></MuiTableCell>
-            <MuiTableCell><StyledAvatar alt="profile" src={athlete.profile_medium} /></MuiTableCell>
-            <MuiTableCell>
-              <p>{`${athlete.firstname} ${athlete.lastname}`}</p>
-              <p>{renderDistance(athlete.distance)}</p>
-            </MuiTableCell>
-            <MuiTableCell></MuiTableCell>
-          </TableRow>
-        )
+        if (athlete) {
+          return (
+            <TableRow key={index}>
+              <MuiTableCell><StyledTypography variant={"h4"}>{position}</StyledTypography></MuiTableCell>
+              <MuiTableCell><StyledAvatar alt="profile" src={athlete.profile_medium} /></MuiTableCell>
+              <MuiTableCell>
+                <p>{`${athlete.firstname} ${athlete.lastname}`}</p>
+                <p>{renderDistance(athlete.distance)}</p>
+              </MuiTableCell>
+              <MuiTableCell></MuiTableCell>
+            </TableRow>
+          )
+        }
+        return
       })
     }
     return
