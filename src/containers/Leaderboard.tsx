@@ -64,7 +64,7 @@ export const Leaderboard: React.FC = () => {
 
   
   useEffect(() => {
-    if (athletes === []) {
+    if (athletes.length === 0) {
       api.readAllAthletes().then((athletes) => {
         if (athletes.message === 'unauthorized') {
           if (isLocalHost()) {
@@ -80,13 +80,13 @@ export const Leaderboard: React.FC = () => {
   })
 
   useEffect(() => {
-    if (activities === []) {
+    if (activities.length === 0 && lazyAthletes?.length === 0) {
       api.readAll().then((activities) => {
         console.log('activites', activities)
         setActivities(activities.data)
       })
     }
-  })
+  }, [activities, lazyAthletes])
 
   const renderDistance = (distance: number) => {
     return ((Math.round(distance * 10) / 10).toString() + " km")
