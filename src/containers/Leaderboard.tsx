@@ -62,22 +62,21 @@ export const Leaderboard: React.FC = () => {
     }
   }, [activities, athletes, latestActivity, latestAthlete,])
 
-  useEffect(() => {
-    api.readAllAthletes().then((athletes) => {
-      if (athletes.message === 'unauthorized') {
-        if (isLocalHost()) {
-          alert('FaunaDB key is not authorized. Make sure you set it in terminal session where you ran `npm start`. Visit http://bit.ly/set-fauna-key for more info')
-        } else {
-          alert('FaunaDB key is not authorized. Verify the key `FAUNADB_SERVER_SECRET` set in Netlify enviroment variables is correct')
-        }
-        return false
+  
+  api.readAllAthletes().then((athletes) => {
+    if (athletes.message === 'unauthorized') {
+      if (isLocalHost()) {
+        alert('FaunaDB key is not authorized. Make sure you set it in terminal session where you ran `npm start`. Visit http://bit.ly/set-fauna-key for more info')
+      } else {
+        alert('FaunaDB key is not authorized. Verify the key `FAUNADB_SERVER_SECRET` set in Netlify enviroment variables is correct')
       }
-      setAthletes(athletes)
-    })
-    api.readAll().then((activities) => {
-      console.log('activites', activities)
-      setActivities(activities.data)
-    })
+      return false
+    }
+    setAthletes(athletes)
+  })
+  api.readAll().then((activities) => {
+    console.log('activites', activities)
+    setActivities(activities.data)
   })
 
   const renderDistance = (distance: number) => {
