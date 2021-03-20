@@ -50,7 +50,7 @@ export const Leaderboard: React.FC = () => {
   const [activities, setActivities] = useState([])
   const [latestActivity, setLatestActivity] = useState<any>(null)
   const lazyAthletes: object[] = activities.length > 0
-    ? athletes.filter((a: any) => activities.some((activitiy: any) => activitiy.athlete.id !== a.id)) 
+    ? athletes.filter((a: any) => activities.some((activity: any) => activity.data.athlete.id !== a.id)) 
     : athletes
 
   useEffect(() => {
@@ -139,14 +139,14 @@ export const Leaderboard: React.FC = () => {
   }
 
   const calculateWeeklyLeaderboard = () => {
-    const grouped = groupBy(activities, ((a: any) => a.athlete.id))
+    const grouped = groupBy(activities, ((a: any) => a.data.athlete.id))
     console.log("grouped", grouped)
     const pairs = toPairs(grouped)
     console.log("pairs", pairs)
     const totals = pairs.map((pair: any) => {
       const athlete = find(athletes, ((u: any) => u.id == pair[0])) // eslint-disable-line
       if (athlete) {
-        athlete.distance = sumBy(pair[1], ((a: any) => a.distance)) / 1000
+        athlete.distance = sumBy(pair[1], ((a: any) => a.data.distance)) / 1000
       }
       return (athlete)
     })
@@ -155,6 +155,7 @@ export const Leaderboard: React.FC = () => {
 
   const renderWeeklyLeaderboard = () => {
     const weeklyLeaderboard = calculateWeeklyLeaderboard()
+    console.log("weekly leaderboard", weeklyLeaderboard)
     const [above, below] = partition(weeklyLeaderboard, ((a: any) => a.distance > targetDistance))
     return (
       <>
