@@ -39,8 +39,13 @@ function fetchActivity(client, eventData) {
     })
     .then((activity) => { 
       console.log("fetched activity", activity)
-      const activityItem = { data : activity }
-      return client.query(q.Create(q.Ref('classes/activities'), activityItem))
+      if (activity.type !== "Run") {
+        console.log("activity was not a run! ignoring activity of type: ", activity.type)
+        return Promise.resolve(null)
+      } else {
+        const activityItem = { data : activity }
+        return client.query(q.Create(q.Ref('classes/activities'), activityItem))
+      }
     }).then(() => {
       return {
         statusCode: 200,
