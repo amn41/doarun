@@ -22,6 +22,14 @@ const StyledTypography = withStyles({
   },
 })(Typography)
 
+const StyledAthleteName = withStyles({
+  root: {
+    fontSize: "150%",
+    fontWeight: "bold",
+    marginBottom: "none",
+  },
+})(Typography)
+
 const MuiTableCell = withStyles({
   root: {
     borderBottom: "none",
@@ -117,7 +125,7 @@ export const Leaderboard: React.FC = () => {
               <MuiTableCell><StyledTypography variant={"h4"}>{position}</StyledTypography></MuiTableCell>
               <MuiTableCell><StyledAvatar alt="profile" src={athlete.profile_medium} /></MuiTableCell>
               <MuiTableCell>
-                <p>{`${athlete.firstname} ${athlete.lastname}`}</p>
+                <StyledAthleteName>{`${athlete.firstname} ${athlete.lastname}`}</StyledAthleteName>
                 <p>{renderDistance(athlete.distance)}</p>
               </MuiTableCell>
               <MuiTableCell></MuiTableCell>
@@ -138,7 +146,7 @@ export const Leaderboard: React.FC = () => {
             <MuiTableCell><StyledTypography variant={"h4"}>&#128564;</StyledTypography></MuiTableCell>
           <MuiTableCell><StyledAvatar alt="profile" src={athlete.profile_medium} /></MuiTableCell>
           <MuiTableCell>
-            <p>{`${athlete.firstname} ${athlete.lastname}`}</p>
+            <StyledAthleteName>{`${athlete.firstname} ${athlete.lastname}`}</StyledAthleteName>
             <p>0 km</p>
           </MuiTableCell>
           <MuiTableCell></MuiTableCell>
