@@ -1,7 +1,7 @@
 import React, { useEffect, useState} from 'react'
 import api from '../utils/api'
 import isLocalHost from '../utils/isLocalHost'
-import { groupBy, orderBy, sumBy, maxBy, toPairs, find, partition, uniq, map, reject } from 'lodash'
+import { groupBy, orderBy, sumBy, maxBy, toPairs, find, partition, reject } from 'lodash'
 
 import { Grid, Table, TableBody, TableRow, TableCell, Typography, Avatar} from '@material-ui/core'
 import { fonts } from '../theme/fonts'
