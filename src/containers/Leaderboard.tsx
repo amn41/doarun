@@ -1,7 +1,7 @@
 import React, { useEffect, useState} from 'react'
 import api from '../utils/api'
 import isLocalHost from '../utils/isLocalHost'
-import { groupBy, orderBy, sumBy, maxBy, toPairs, find, partition } from 'lodash'
+import { groupBy, orderBy, sumBy, maxBy, toPairs, find, partition, uniq, map, reject } from 'lodash'
 
 import { Grid, Table, TableBody, TableRow, TableCell, Typography, Avatar} from '@material-ui/core'
 import { fonts } from '../theme/fonts'
@@ -57,9 +57,9 @@ export const Leaderboard: React.FC = () => {
   const [latestAthlete, setLatestAthlete] = useState<any>(null)
   const [activities, setActivities] = useState([])
   const [latestActivity, setLatestActivity] = useState<any>(null)
-  const lazyAthletes: object[] = activities.length > 0
-    ? athletes.filter((a: any) => activities.some((activity: any) => activity.data.athlete.id !== a.id)) 
-    : athletes
+  const lazyAthletes: object[] = activities.length > 0 ?
+    reject(athletes, (a: any) => find(activities, ((act: any) => a.id === act.data.athlete.id))) :
+    athletes
 
   useEffect(() => {
     if (activities?.length > 0) {
