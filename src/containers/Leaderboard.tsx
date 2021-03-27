@@ -90,7 +90,6 @@ export const Leaderboard: React.FC = () => {
   useEffect(() => {
     if (activities.length === 0 && lazyAthletes?.length === 0) {
       api.readAll().then((activities) => {
-        console.log('activites', activities)
         setActivities(activities.data)
       })
     }
@@ -118,7 +117,6 @@ export const Leaderboard: React.FC = () => {
     if (leaders.length > 0) {
       return leaders.map((athlete: any, index: number) => {
         const position = (index + 1 + offset).toString() + "."
-        console.log(JSON.stringify(athlete))
         if (athlete) {
           return (
             <TableRow key={index}>
@@ -172,7 +170,6 @@ export const Leaderboard: React.FC = () => {
 
   const renderWeeklyLeaderboard = () => {
     const weeklyLeaderboard = calculateWeeklyLeaderboard()
-    console.log("weekly leaderboard", weeklyLeaderboard)
     const [above, below] = partition(weeklyLeaderboard, ((a: any) => a && a.distance > targetDistance))
     return (
       <>
