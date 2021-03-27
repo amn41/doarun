@@ -31,7 +31,9 @@ const StyledAvatar = withStyles({
   },
 })(Avatar)
 
-export const AppHeader: React.FC = () => {
+export const AppHeader: React.FC = (props: any) => {
+  const defaultProfileUrl = "http://www.gravatar.com/avatar/?d=identicon"
+  const profileUrl = props?.profile?.strava?.data?.athlete?.profile_medium || defaultProfileUrl
   return (
     <header>
       <StyledAppBar position="static">
@@ -42,7 +44,7 @@ export const AppHeader: React.FC = () => {
             </Grid>
             <Grid item>
               <Link to="/profile">
-                <StyledAvatar alt="profile" title="View Profile" src="https://dgalywyr863hv.cloudfront.net/pictures/athletes/296399/461322/2/medium.jpg" />
+                <StyledAvatar alt="profile" title="View Profile" src={profileUrl} />
               </Link>
             </Grid>
           </Grid>

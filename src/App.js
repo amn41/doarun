@@ -3,6 +3,7 @@ import Leaderboard from './containers/Leaderboard'
 import Profile from './components/Profile'
 import AppHeader from './components/AppHeader'
 import netlifyIdentity from 'netlify-identity-widget'
+import api from './utils/api'
 import {
   HashRouter as Router,
   Route,
@@ -38,7 +39,8 @@ function PrivateRoute({ component: Component, isAuthenticated, ...rest }) {
 export default class App extends Component {
   state = {
     isAuthenticated: netlifyIdentity.currentUser() != null,
-    user: netlifyIdentity.currentUser()
+    user: netlifyIdentity.currentUser(),
+    profile: null
   }
   constructor(props) {
     super(props);
@@ -63,15 +65,27 @@ export default class App extends Component {
       })
     });
   }
+  componentDidMount() {
+    const { user } = this.state
+    if (user) {
+       user.jwt().then((jwt) => {
+         return api.readProfile(jwt)
+       }).then((profile) => {
+    	 this.setState({
+    	   profile: profile
+         })
+       }) 
+    }
+  }
   render() {
       return (
       <ThemeProvider theme={theme}>
           <Router>
-            <AppHeader />
+            <AppHeader profile={this.state.profile} />
             <Switch>
               <PrivateRoute exact path="/" component={Leaderboard} isAuthenticated={this.state.isAuthenticated} />
               <Route path="/profile" >
-                <Profile isAuthenticated={this.state.isAuthenticated} user={this.state.user} authenticate={this.authenticate} signout={this.signout} />
+                <Profile isAuthenticated={this.state.isAuthenticated} user={this.state.user} profile={this.state.profile} authenticate={this.authenticate} signout={this.signout} />
               </Route>
             </Switch>
           </Router>

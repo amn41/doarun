@@ -22,25 +22,9 @@ class AuthButton extends Component {
 
 
 export default class Profile extends Component {
-    state = {
-      profile: null
-    }
-    componentDidMount() {
-      if (this.props.user) {
-      	 this.props.user.jwt().then((jwt) => {
-      	     return api.readProfile(jwt)
-      	 }).then((profile) => {
-      	     console.log('profile', JSON.stringify(profile))
-      	     this.setState({
-      	       profile: profile
-      	     })
-      	 }) 
-      }
-    }
     renderProfile() {
-      const { profile } = this.state
+      const { profile } = this.props
       const stravaLinked = profile != null && profile.strava != null
-      console.log("stravaLinked", stravaLinked)
       if (!profile) {
         return null
       }
