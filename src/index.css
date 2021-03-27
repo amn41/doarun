@@ -60,14 +60,6 @@ h1 {
     display: flex;
 }
 
-.weekly-leaderboard-section {
-    margin: 40px 40px 40px 100px;
-}
-
-.latest-run-section {
-    margin: 40px 40px 40px 100px;
-}
-
 td { 
     padding: 10px;
 }
