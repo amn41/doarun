@@ -122,7 +122,7 @@ export const Leaderboard: React.FC = () => {
     return (
       <>
         <h1>{`LATEST RUN: ${latestAthlete.firstname} put in ${renderDistance(latestActivity.distance / 1000)}`}</h1>
-         <img src={mapUrl} />
+         <img alt="map of latest run" src={mapUrl} />
       </>
     )
   }
