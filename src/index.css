@@ -35,7 +35,8 @@ button:focus, button:hover {
 
 h1 {
   font-family: "Bangers";
-  color: #222;
+  color: #202A25;
+  letter-spacing: 0.02em;
 }
 
 .position {
