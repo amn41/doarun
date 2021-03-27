@@ -19,6 +19,9 @@ const StyledTypography = withStyles({
   root: {
     color: colors.mizuno,
     fontFamily: fonts.main,
+    overflow: "hidden",
+    whiteSpace: "nowrap",
+    paddingRight: "10px",
   },
 })(Typography)
 
