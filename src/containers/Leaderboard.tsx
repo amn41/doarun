@@ -106,12 +106,23 @@ export const Leaderboard: React.FC = () => {
     if (!activities) {
       return
     }
+    if (! (latestActivity && latestAthlete) ) {
+      return (
+      	<>
+      	  <h1>{'NO ONE HAS RUN YET'}</h1>
+      	  <>
+      	    {'WHAT ARE YOU WAITING FOR?'}
+      	  </>
+      	</>
+      )
+    }
+    const polyline = latestActivity.map.polyline
+    const key = "AIzaSyCfT_9slhBvAyhomLgFk4OGiiZFvUaAYrs"
+    const mapUrl = `https://maps.googleapis.com/maps/api/staticmap?path=enc:${polyline}&key=${key}&size=600x300`
     return (
       <>
-        <h1>{latestAthlete ? `LATEST RUN: ${latestAthlete.firstname}` : 'NO ONE HAS RUN YET'}</h1>
-        <>
-          {latestActivity ? renderDistance(latestActivity.distance / 1000) : 'WHAT ARE YOU WAITING FOR?'}
-        </>
+        <h1>{`LATEST RUN: ${latestAthlete.firstname} put in ${renderDistance(latestActivity.distance / 1000)}`}</h1>
+         <img src={mapUrl} />
       </>
     )
   }
