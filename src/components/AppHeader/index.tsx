@@ -32,7 +32,7 @@ const StyledAvatar = withStyles({
 })(Avatar)
 
 export const AppHeader: React.FC = (props: any) => {
-  const defaultProfileUrl = "http://www.gravatar.com/avatar/?d=identicon"
+  const defaultProfileUrl = "https://www.gravatar.com/avatar/?d=identicon"
   const profileUrl = props?.profile?.strava?.data?.athlete?.profile_medium || defaultProfileUrl
   return (
     <header>
