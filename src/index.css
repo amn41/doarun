@@ -33,18 +33,6 @@ button:focus, button:hover {
   text-decoration: none;
 }
 
-h1 {
-  font-family: "Bangers";
-  color: #202A25;
-  letter-spacing: 0.02em;
-}
-
-.position {
-  font-family: "Bangers";
-  color: #00C6C7;
-  font-size: 300%;
-}
-
 .btn-danger {
   background-color: #fb6d77;
   border-color: #fb6d77;
@@ -55,71 +43,6 @@ h1 {
     background-color: #fa3b49;
     border-color: #fa3b49;
     color: #fff;
-}
-
-.container {
-    display: flex;
-}
-
-td { 
-    padding: 10px;
-}
-
-.avatar {
-    border-radius: 50%;
-}
-
-.athlete-name {
-    font-weight: bold;
-    font-size: 150%;
-}
-
-.athlete-distance {
-    margin-top: -16px;
-    font-style: italic;
-}
-
-.target-distance {
-    color: #00C6C7;
-    font-family: "Bangers";
-}
-
-.target-text {
-    margin: 0px;
-}
-
-.target-text-row td {
-    margin: 0px;
-    padding: 0px
-}
-
-.pacemaker-line {
-    padding: 0px;
-    margin: 0px;
-}
-
-.pacemaker-row {
-    height: 2px;
-}
-
-.pacemaker-row hr {
-    border: 4px solid #00C6C7;
-}
-
-.avatar {
-    width: 60px;
-}
-
-.latest-activity {
-    font-family: "Bangers";
-    font-size: 180px;
-    color: #222;
-}
-
-.latest-activity-placeholder {
-    font-family: "Bangers";
-    font-size: 80px;
-    color: #222;
 }
 
 .profile-card {
