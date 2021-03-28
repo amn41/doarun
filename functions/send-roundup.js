@@ -14,8 +14,8 @@ function computePersonalizations(activities, users) {
   })  
   var data = users.data.map(function(user) { return { to: user.email, dynamicTemplateData: { name: user.athlete.firstname, distance: Math.round(totals[user.athlete.id]/100) /10 }}} )
   console.log("data", data)
-  const partial = data.filter(function(a){ return a.to === "alan.nichol@gmail.com"})
-  return partial
+  //const partial = data.filter(function(a){ return a.to === "alan.nichol@gmail.com"})
+  return data
 }
 
 exports.handler = async function(event, context) {
