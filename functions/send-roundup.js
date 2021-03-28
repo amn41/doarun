@@ -7,7 +7,13 @@ const subHours = require('date-fns/subHours')
 
 
 function computePersonalizations(activities, users) {
-  const data = users.data.map(function(user) { return { to: user.email, dynamicTemplateData: { name: user.athlete.firstname }}} )
+  //console.log("activities", JSON.stringify(activities))
+  var totals = Object.fromEntries(users.data.map(function(u){ return [u.athlete.id, 0] }))
+  activities.data.forEach(function(a) {
+    totals[a.data.athlete.id] += a.data.distance
+  })  
+  var data = users.data.map(function(user) { return { to: user.email, dynamicTemplateData: { name: user.athlete.firstname, distance: Math.round(totals[user.athlete.id]/100) /10 }}} )
+  console.log("data", data)
   const partial = data.filter(function(a){ return a.to === "alan.nichol@gmail.com"})
   return partial
 }
@@ -53,7 +59,6 @@ exports.handler = async function(event, context) {
         personalizations: personalizations,
         from: 'alan.nichol@gmail.com',
         templateId: 'd-3dd0ed9fc1474710a3cb42e1fd01466b',
-        subject: `This week's winner is ${winner}`
       }
       return sgMail.send(msg)
     })
