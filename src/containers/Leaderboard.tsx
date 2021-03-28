@@ -57,6 +57,12 @@ const StyledAvatar = withStyles({
   },
 })(Avatar)
 
+const StyledBackdrop = withStyles({
+  root: {
+    flexDirection: 'column',
+  },
+})(Backdrop)
+
 export const Leaderboard: React.FC = () => {
   const targetDistance = 10
   const [athletes, setAthletes] = useState([])
@@ -218,7 +224,13 @@ export const Leaderboard: React.FC = () => {
   return (
     <StyledLeaderboard>
       <Grid container justify='space-around'>
-        {isLoading && <Backdrop open={true}><CircularProgress /></Backdrop>}
+        {isLoading && (
+          <StyledBackdrop open={true}>
+            <img src="https://media.tenor.com/images/e53905912a05e97294ba68bca872928b/tenor.gif" width="40%" alt="loading running stats" />
+            <br />
+            <CircularProgress />
+          </StyledBackdrop>
+        )}
         {!isLoading && (
           <>
             <StyledGrid item>
