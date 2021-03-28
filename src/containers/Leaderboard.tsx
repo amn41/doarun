@@ -120,7 +120,7 @@ export const Leaderboard: React.FC = () => {
       	</>
       )
     }
-    const polyline = latestActivity.map.polyline.setOptions({ strokeColor: colors.puma })
+    const polyline = latestActivity.map.polyline({ strokeColor: colors.puma })
     const key = "AIzaSyCfT_9slhBvAyhomLgFk4OGiiZFvUaAYrs"
     const mapUrl = `https://maps.googleapis.com/maps/api/staticmap?path=enc:${polyline}&key=${key}&size=600x300`
     return (
