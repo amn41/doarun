@@ -1,0 +1,16 @@
+name: weekly-roundup
+
+on:
+  schedule:
+  # 2am every Monday
+  - cron: "0 2 * * 1"
+  push:
+    branches: [ email ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      # Runs a single command using the runners shell
+      - name: Run a one-line script
+        run: curl https://app.doarun.com/.netlify/functions/send-roundup
