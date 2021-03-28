@@ -9,6 +9,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      # Runs a single command using the runners shell
+      # send the weekly roundup
       - name: Run a one-line script
         run: curl https://app.doarun.com/.netlify/functions/send-roundup
