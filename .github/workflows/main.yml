@@ -4,8 +4,6 @@ on:
   schedule:
   # 2am every Monday
   - cron: "0 2 * * 1"
-  push:
-    branches: [ email ]
 
 jobs:
   build:
