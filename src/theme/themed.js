@@ -1,5 +1,6 @@
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
 import { colors } from './colors'
+import { fonts } from "./fonts"
 
 const theme = createMuiTheme({
     palette: {
@@ -14,6 +15,27 @@ const theme = createMuiTheme({
             light: colors.mizunoLight,
         },
     },
+    typography: {
+        h1: {
+            fontFamily: fonts.main,
+            letterSpacing: '0.02em',
+            color: colors.nike,
+            fontSize: '2em',
+            padding: '0 1rem',
+            margin: '0.67em 0'
+        },
+        h4: {
+            fontFamily: fonts.main,
+            letterSpacing: '0.02em',
+            fontSize: '1.8em',
+            color: colors.mizuno,
+            padding: '0 0.4rem',
+        },
+        body2: {
+          fontSize: '1.5em',
+          fontWeight: 'bold',
+        }
+    }
 })
 
 export default theme

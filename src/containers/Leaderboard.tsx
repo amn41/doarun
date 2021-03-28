@@ -3,7 +3,7 @@ import api from '../utils/api'
 import isLocalHost from '../utils/isLocalHost'
 import { groupBy, orderBy, sumBy, maxBy, toPairs, find, partition, reject } from 'lodash'
 
-import { Grid, Table, TableBody, TableRow, TableCell, Typography, Avatar} from '@material-ui/core'
+import { Grid, Table, TableBody, TableRow, TableCell, Typography, Avatar, Paper} from '@material-ui/core'
 import { fonts } from '../theme/fonts'
 import { withStyles } from '@material-ui/core/styles'
 import { colors } from '../theme/colors'
@@ -15,21 +15,21 @@ const StyledLeaderboard = styled('div')({
   fontFamily: fonts.main,
 })
 
-const StyledTypography = withStyles({
+const StyledGrid = withStyles({
   root: {
-    color: colors.mizuno,
-    fontFamily: fonts.main,
-    overflow: "hidden",
-    whiteSpace: "nowrap",
-    paddingRight: "10px",
+    margin: '0 1rem',
+  },
+})(Grid)
+
+const StyledTarget = withStyles({
+  root: {
+    fontSize: '1em',
   },
 })(Typography)
 
-const StyledAthleteName = withStyles({
+const StyledTypography = withStyles({
   root: {
-    fontSize: "150%",
-    fontWeight: "bold",
-    marginBottom: "none",
+    fontSize: '1.5em',
   },
 })(Typography)
 
@@ -52,6 +52,12 @@ const StyledAvatar = withStyles({
     width: theme.spacing(7),
   },
 })(Avatar)
+
+const StyledMap = withStyles({
+  root: {
+    width: '100%',
+  },
+})(Paper)
 
 
 export const Leaderboard: React.FC = () => {
@@ -109,20 +115,18 @@ export const Leaderboard: React.FC = () => {
     if (! (latestActivity && latestAthlete) ) {
       return (
       	<>
-      	  <h1>{'NO ONE HAS RUN YET'}</h1>
-      	  <>
-      	    {'WHAT ARE YOU WAITING FOR?'}
-      	  </>
+      	  <Typography variant="h1">{'NO ONE HAS RUN YET'}</Typography>
+          <StyledTypography variant="h1">{'WHAT ARE YOU WAITING FOR?'}</StyledTypography>
       	</>
       )
     }
-    const polyline = latestActivity.map.polyline
+    const polyline = latestActivity.map.polyline.setOptions({ strokeColor: colors.puma })
     const key = "AIzaSyCfT_9slhBvAyhomLgFk4OGiiZFvUaAYrs"
     const mapUrl = `https://maps.googleapis.com/maps/api/staticmap?path=enc:${polyline}&key=${key}&size=600x300`
     return (
       <>
-        <h1>{`LATEST RUN: ${latestAthlete.firstname} put in ${renderDistance(latestActivity.distance / 1000)}`}</h1>
-         <img alt="map of latest run" src={mapUrl} />
+        <Typography variant="h1">{`LATEST RUN: ${latestAthlete.firstname} put in ${renderDistance(latestActivity.distance / 1000)}`}</Typography>
+        <StyledMap elevation={0}><img alt="map of latest run" src={mapUrl} /></StyledMap>
       </>
     )
   }
@@ -134,10 +138,10 @@ export const Leaderboard: React.FC = () => {
         if (athlete) {
           return (
             <TableRow key={index}>
-              <MuiTableCell><StyledTypography variant={"h4"}>{position}</StyledTypography></MuiTableCell>
+              <MuiTableCell><Typography variant={"h4"}>{position}</Typography></MuiTableCell>
               <MuiTableCell><StyledAvatar alt="profile" src={athlete.profile_medium} /></MuiTableCell>
               <MuiTableCell>
-                <StyledAthleteName>{`${athlete.firstname} ${athlete.lastname}`}</StyledAthleteName>
+                <Typography variant={"body2"}>{`${athlete.firstname} ${athlete.lastname}`}</Typography>
                 <p>{renderDistance(athlete.distance)}</p>
               </MuiTableCell>
               <MuiTableCell></MuiTableCell>
@@ -155,10 +159,10 @@ export const Leaderboard: React.FC = () => {
       return lazyAthletes.map((athlete: any, index: number) => {
         return (
         <TableRow key={index}>
-            <MuiTableCell><StyledTypography variant={"h4"}>&#128564;</StyledTypography></MuiTableCell>
+            <MuiTableCell><Typography variant={"h4"}>&#128564;</Typography></MuiTableCell>
           <MuiTableCell><StyledAvatar alt="profile" src={athlete.profile_medium} /></MuiTableCell>
           <MuiTableCell>
-            <StyledAthleteName>{`${athlete.firstname} ${athlete.lastname}`}</StyledAthleteName>
+              <Typography variant={"body2"}>{`${athlete.firstname} ${athlete.lastname}`}</Typography>
             <p>0 km</p>
           </MuiTableCell>
           <MuiTableCell></MuiTableCell>
@@ -187,14 +191,13 @@ export const Leaderboard: React.FC = () => {
     const [above, below] = partition(weeklyLeaderboard, ((a: any) => a && a.distance > targetDistance))
     return (
       <>
-      <h1>THIS WEEK</h1>
+        <Typography variant="h1">THIS WEEK</Typography>
       <Table>
         <TableBody>
           {renderPartialLeaderboardTable(above, 0)}
           <TableRow>
-            <TableCellNoPadding colSpan={3}/>
-            <TableCellNoPadding>
-                <StyledTypography variant={"h5"}>{targetDistance} KM TARGET</StyledTypography>
+            <TableCellNoPadding align='right'>
+              <StyledTarget noWrap variant={"h4"}>{targetDistance} KM TARGET</StyledTarget>
             </TableCellNoPadding>
           </TableRow>
           <TableRow>
@@ -211,12 +214,12 @@ export const Leaderboard: React.FC = () => {
   return (
     <StyledLeaderboard>
       <Grid container justify='space-around'>
-        <Grid item>
+        <StyledGrid item>
           {renderWeeklyLeaderboard()}
-        </Grid>
-        <Grid item>
+        </StyledGrid>
+        <StyledGrid item>
           {renderLatestActivity()}
-        </Grid>
+        </StyledGrid>
       </Grid>
     </StyledLeaderboard>
   )
