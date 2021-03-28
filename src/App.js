@@ -75,6 +75,7 @@ export default class App extends Component {
     	   profile: profile
          })
        }) 
+       .catch((error) => console.error(error))
     }
   }
   render() {

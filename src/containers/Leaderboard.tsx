@@ -3,7 +3,7 @@ import api from '../utils/api'
 import isLocalHost from '../utils/isLocalHost'
 import { groupBy, orderBy, sumBy, maxBy, toPairs, find, partition, reject } from 'lodash'
 
-import { Grid, Table, TableBody, TableRow, TableCell, Typography, Avatar} from '@material-ui/core'
+import { Grid, Table, TableBody, TableRow, TableCell, Typography, Avatar, CircularProgress, Backdrop } from '@material-ui/core'
 import { fonts } from '../theme/fonts'
 import { withStyles } from '@material-ui/core/styles'
 import { colors } from '../theme/colors'
@@ -66,6 +66,7 @@ export const Leaderboard: React.FC = () => {
   const lazyAthletes: object[] = activities.length > 0 ?
     reject(athletes, (a: any) => find(activities, ((act: any) => a.id === act.data.athlete.id))) :
     athletes
+  const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
     if (activities?.length > 0) {
@@ -90,6 +91,7 @@ export const Leaderboard: React.FC = () => {
         }
         setAthletes(athletes)
       })
+      .catch((error) => console.error(error))
     }
   }, [athletes])
 
@@ -97,6 +99,11 @@ export const Leaderboard: React.FC = () => {
     if (activities.length === 0 && lazyAthletes?.length === 0) {
       api.readAll().then((activities) => {
         setActivities(activities.data)
+        setIsLoading(false)
+      })
+      .catch((error) => {
+        console.error(error)
+        setIsLoading(false)
       })
     }
   }, [activities, lazyAthletes])
@@ -211,12 +218,17 @@ export const Leaderboard: React.FC = () => {
   return (
     <StyledLeaderboard>
       <Grid container justify='space-around'>
-        <StyledGrid item>
-          {renderWeeklyLeaderboard()}
-        </StyledGrid>
-        <StyledGrid item>
-          {renderLatestActivity()}
-        </StyledGrid>
+        {isLoading && <Backdrop open={true}><CircularProgress /></Backdrop>}
+        {!isLoading && (
+          <>
+            <StyledGrid item>
+              {renderWeeklyLeaderboard()}
+            </StyledGrid>
+            <StyledGrid item>
+              {renderLatestActivity()}
+            </StyledGrid>
+          </>
+        )}
       </Grid>
     </StyledLeaderboard>
   )
