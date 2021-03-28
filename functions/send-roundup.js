@@ -54,7 +54,6 @@ exports.handler = async function(event, context) {
     }).then(([activities, users]) => {
       console.log("users", users)
       const personalizations = computePersonalizations(activities, users)
-      const winner = "GP"
       const msg = {
         personalizations: personalizations,
         from: 'alan.nichol@gmail.com',
