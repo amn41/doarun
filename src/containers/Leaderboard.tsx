@@ -19,6 +19,10 @@ const StyledMap = styled('img')({
   width: '100%',
 })
 
+const NoWrap = styled('span')({
+  whiteSpace: 'nowrap',
+})
+
 const StyledGrid = withStyles({
   root: {
     margin: '0 1rem',
@@ -27,7 +31,7 @@ const StyledGrid = withStyles({
 
 const StyledTarget = withStyles({
   root: {
-    fontSize: '1em',
+    fontSize: '1.4em',
   },
 })(Typography)
 
@@ -125,7 +129,7 @@ export const Leaderboard: React.FC = () => {
     if (! (latestActivity && latestAthlete) ) {
       return (
       	<>
-      	  <Typography variant="h1">{'NO ONE HAS RUN YET'}</Typography>
+          <Typography variant="h1">{'NO ONE HAS RUN YET'}</Typography>
           <StyledTypography variant="h1">{'WHAT ARE YOU WAITING FOR?'}</StyledTypography>
       	</>
       )
@@ -135,7 +139,7 @@ export const Leaderboard: React.FC = () => {
     const mapUrl = `https://maps.googleapis.com/maps/api/staticmap?path=color:red%7Cenc:${polyline}&key=${key}&size=600x300`
     return (
       <>
-        <Typography variant="h1">{`LATEST RUN: ${latestAthlete.firstname} put in ${renderDistance(latestActivity.distance / 1000)}`}</Typography>
+        <Typography variant="h1">LATEST RUN: <NoWrap>{`${latestAthlete.firstname} put in ${renderDistance(latestActivity.distance / 1000)}`}</NoWrap></Typography>
         <StyledMap alt="map of latest run" src={mapUrl} />
       </>
     )
