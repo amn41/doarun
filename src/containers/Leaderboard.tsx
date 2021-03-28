@@ -3,7 +3,7 @@ import api from '../utils/api'
 import isLocalHost from '../utils/isLocalHost'
 import { groupBy, orderBy, sumBy, maxBy, toPairs, find, partition, reject } from 'lodash'
 
-import { Grid, Table, TableBody, TableRow, TableCell, Typography, Avatar, Paper} from '@material-ui/core'
+import { Grid, Table, TableBody, TableRow, TableCell, Typography, Avatar} from '@material-ui/core'
 import { fonts } from '../theme/fonts'
 import { withStyles } from '@material-ui/core/styles'
 import { colors } from '../theme/colors'
@@ -13,6 +13,10 @@ import theme from '../theme/themed'
 const StyledLeaderboard = styled('div')({
   width: '100%',
   fontFamily: fonts.main,
+})
+
+const StyledMap = styled('img')({
+  width: '100%',
 })
 
 const StyledGrid = withStyles({
@@ -52,13 +56,6 @@ const StyledAvatar = withStyles({
     width: theme.spacing(7),
   },
 })(Avatar)
-
-const StyledMap = withStyles({
-  root: {
-    width: '100%',
-  },
-})(Paper)
-
 
 export const Leaderboard: React.FC = () => {
   const targetDistance = 10
@@ -126,7 +123,7 @@ export const Leaderboard: React.FC = () => {
     return (
       <>
         <Typography variant="h1">{`LATEST RUN: ${latestAthlete.firstname} put in ${renderDistance(latestActivity.distance / 1000)}`}</Typography>
-        <StyledMap elevation={0}><img alt="map of latest run" src={mapUrl} /></StyledMap>
+        <StyledMap alt="map of latest run" src={mapUrl} />
       </>
     )
   }
@@ -142,7 +139,7 @@ export const Leaderboard: React.FC = () => {
               <MuiTableCell><StyledAvatar alt="profile" src={athlete.profile_medium} /></MuiTableCell>
               <MuiTableCell>
                 <Typography variant={"body2"}>{`${athlete.firstname} ${athlete.lastname}`}</Typography>
-                <p>{renderDistance(athlete.distance)}</p>
+                <Typography variant={"body1"}>{renderDistance(athlete.distance)}</Typography>
               </MuiTableCell>
               <MuiTableCell></MuiTableCell>
             </TableRow>

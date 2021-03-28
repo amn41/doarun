@@ -32,8 +32,13 @@ const theme = createMuiTheme({
             padding: '0 0.4rem',
         },
         body2: {
-          fontSize: '1.5em',
+          fontSize: '1em',
           fontWeight: 'bold',
+        },
+        p: {
+          body1: {
+            fontSize: '0.8em',
+          }
         }
     }
 })
