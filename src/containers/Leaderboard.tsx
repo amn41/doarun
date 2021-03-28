@@ -193,7 +193,7 @@ export const Leaderboard: React.FC = () => {
         <TableBody>
           {renderPartialLeaderboardTable(above, 0)}
           <TableRow>
-            <TableCellNoPadding align='right'>
+            <TableCellNoPadding colSpan={4} align='right'>
               <StyledTarget noWrap variant={"h4"}>{targetDistance} KM TARGET</StyledTarget>
             </TableCellNoPadding>
           </TableRow>
