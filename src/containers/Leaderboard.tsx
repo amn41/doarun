@@ -139,7 +139,8 @@ export const Leaderboard: React.FC = () => {
     const mapUrl = `https://maps.googleapis.com/maps/api/staticmap?path=color:red%7Cenc:${polyline}&key=${key}&size=600x600`
     return (
       <>
-        <Typography variant="h1">LATEST RUN: <NoWrap>{`${latestAthlete.firstname} put in ${renderDistance(latestActivity.distance / 1000)}`}</NoWrap></Typography>
+        <Typography variant="h1">LATEST RUN:</Typography>
+        <StyledTypography variant="h2"><NoWrap>{`${latestAthlete.firstname} put in ${renderDistance(latestActivity.distance / 1000)}`}</NoWrap></StyledTypography>
         <StyledMap alt="map of latest run" src={mapUrl} />
       </>
     )
