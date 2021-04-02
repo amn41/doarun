@@ -6,7 +6,8 @@ const startOfWeek = require('date-fns/startOfWeek')
 
 
 exports.handler = (event, context) => {
-  console.log('Function `activities-read-all` invoked')
+  const groupId = event.queryStringParameters.groupId
+  console.log('Function `activities-read-group` invoked for group with id', groupId)
   /* configure faunaDB Client with our secret */
   const client = new faunadb.Client({
     secret: process.env.FAUNADB_SERVER_SECRET

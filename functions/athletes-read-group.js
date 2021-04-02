@@ -4,7 +4,8 @@ const q = faunadb.query
 
 
 exports.handler = (event, context) => {
-  console.log('Function `athletes-read-all` invoked')
+  const groupId = event.queryStringParameters.groupId
+  console.log('Function `athletes-read-group` invoked with group id',groupId)
   /* configure faunaDB Client with our secret */
   const client = new faunadb.Client({
     secret: process.env.FAUNADB_SERVER_SECRET
@@ -14,7 +15,6 @@ exports.handler = (event, context) => {
       const authRefs = response.data
       console.log('Authrefs', authRefs)
       console.log(`${authRefs.length} auths found`)
-      // create new query out of athlete refs. http://bit.ly/2LG3MLg
       const getAllAthleteDataQuery = authRefs.map((ref) => {
         return q.Get(ref)
       })
