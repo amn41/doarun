@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import stravaButton from '../../assets/btn_strava_connectwith_orange.svg'
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom'
+import api from '../../utils/api'
 
 const oauthUrl = "https://www.strava.com/oauth/authorize?client_id=62285&response_type=code&redirect_uri=https://amazing-jang-8a41ee.netlify.app/.netlify/functions/oauth-complete&approval_prompt=force&scope=activity:read_all"
 
@@ -21,6 +22,37 @@ class AuthButton extends Component {
 
 
 export default class Profile extends Component {
+    state = {
+      groups: null
+    }
+    componentDidMount() {
+      this.props.user.jwt().then((jwt) =>  {
+        return api.readGroups(jwt)
+      }).then((groups) => {
+        this.setState({
+          groups: groups
+        })
+      })
+    }
+    renderGroups() {
+      const { groups } = this.state
+      if(groups) {
+        console.log(groups.data)
+      }
+      return (
+        <div>
+          {groups && (
+             groups.data.map((group) => {
+               return (
+                 <Link to="/">
+                   {group.data.name} - {group.data.weekly_target_km} km
+                 </Link>
+               )
+             })
+          )}
+        </div>
+      )
+    }
     renderProfile() {
       const { profile } = this.props
       const stravaLinked = profile != null && profile.strava != null
@@ -50,8 +82,9 @@ export default class Profile extends Component {
         <div className="profile-card">
           <div>
             <br/>
-            {this.props.user ? <Link to="/">View Leaderboard</Link> : null}
+            {this.props.user ? <h1>My Running Groups</h1> : null}
             <br/>
+              {this.renderGroups()}
             <br/>
             <div>
               {this.renderProfile()}
