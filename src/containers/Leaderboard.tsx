@@ -90,7 +90,7 @@ export const Leaderboard: React.FC = () => {
   
   useEffect(() => {
     if (athletes.length === 0) {
-      api.readAllAthletes().then((athletes) => {
+      api.readAthletes("testGroupId").then((athletes) => {
         if (athletes.message === 'unauthorized') {
           if (isLocalHost()) {
             alert('FaunaDB key is not authorized. Make sure you set it in terminal session where you ran `npm start`. Visit http://bit.ly/set-fauna-key for more info')
@@ -107,7 +107,7 @@ export const Leaderboard: React.FC = () => {
 
   useEffect(() => {
     if (activities.length === 0 && lazyAthletes?.length === 0) {
-      api.readAll().then((activities) => {
+      api.readActivities("testGroupId").then((activities) => {
         setActivities(activities.data)
         setIsLoading(false)
       })
@@ -225,6 +225,15 @@ export const Leaderboard: React.FC = () => {
     )
   }
 
+  const renderGroupSelector = () => {
+    return ( 
+      <select>
+        <option value="Paperback Runners">{"Paperback Runners"}</option>
+        <option value="none">{"create new group"}</option>
+      </select>
+    )
+  }
+
   return (
     <StyledLeaderboard>
       <Grid container justify='space-around'>
@@ -237,6 +246,9 @@ export const Leaderboard: React.FC = () => {
         )}
         {!isLoading && (
           <>
+            <StyledGrid item>
+              {renderGroupSelector()}
+            </StyledGrid>
             <StyledGrid item>
               {renderWeeklyLeaderboard()}
             </StyledGrid>
