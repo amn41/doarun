@@ -19,9 +19,17 @@ const readProfile = (token) => {
   })
 }
 
+const readGroups = (token) => {
+  const header = { Authorization: `Bearer ${token}` }
+  return fetch('/.netlify/functions/groups-read', {headers: header}).then((response) => {
+    return response.json()
+  })
+}
+
 
 export default {
   readActivities: readActivities,
   readAthletes: readAthletes,
-  readProfile: readProfile
+  readProfile: readProfile,
+  readGroups: readGroups
 }
