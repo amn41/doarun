@@ -5,6 +5,7 @@
   "dependencies": {
     "@analytics/google-analytics": "^0.3.1",
     "@fontsource/bangers": "^4.2.1",
+    "@fontsource/londrina-solid": "^4.2.1",
     "@material-ui/core": "^4.11.3",
     "@sendgrid/mail": "^7.4.2",
     "@types/jest": "^26.0.20",
@@ -24,7 +25,8 @@
     "react-scripts": "3.4.1",
     "strava-v3": "2.0.9",
     "styled-components": "^5.2.1",
-    "typescript": "^4.2.3"
+    "typescript": "^4.2.3",
+    "jsonschema": "^1.4.0"
   },
   "scripts": {
     "bootstrap": "netlify dev:exec node ./scripts/bootstrap-fauna-database.js",

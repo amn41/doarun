@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom'
 import './index.css'
 import App from './App'
 import "@fontsource/bangers"
+import "@fontsource/londrina-solid"
 import netlifyIdentity from 'netlify-identity-widget';
 
 window.netlifyIdentity = netlifyIdentity;

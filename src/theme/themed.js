@@ -34,6 +34,7 @@ const theme = createMuiTheme({
         body2: {
           fontSize: '1em',
           fontWeight: 'bold',
+          fontFamily: fonts.secondary,
         },
         p: {
           body1: {
