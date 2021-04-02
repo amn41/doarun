@@ -1,34 +1,16 @@
 /* Api methods to call /functions */
 
-const readAll = () => {
-  return fetch('/.netlify/functions/activities-read-all').then((response) => {
+const readActivities = (groupId) => {
+  return fetch(`/.netlify/functions/activities-read-group?groupId=${groupId}`).then((response) => {
     return response.json()
   })
 }
 
-const readAllAthletes = () => {
-  return fetch('/.netlify/functions/athletes-read-all').then((response) => {
+const readAthletes = (groupId) => {
+  return fetch(`/.netlify/functions/athletes-read-group?groupId=${groupId}`).then((response) => {
     return response.json()
   })
 }
-
-const readLatestActivity = () => {
-  return fetch('/.netlify/functions/activities-read-latest').then((response) => {
-    return response.json()
-  })
-}
-
-const readLeaderboard = () => {
-  return fetch('/.netlify/functions/leaderboard-read').then((response) => {
-    return response.json()
-  })
-}    
-
-const readWeeklyLeaderboard = () => {
-  return fetch('/.netlify/functions/weekly-leaderboard-read').then((response) => {
-    return response.json()
-  })
-}    
 
 const readProfile = (token) => {
   const header = { Authorization: `Bearer ${token}` }
@@ -39,10 +21,7 @@ const readProfile = (token) => {
 
 
 export default {
-  readAll: readAll,
-  readAllAthletes: readAllAthletes,
-  readLatestActivity: readLatestActivity,
-  readLeaderboard: readLeaderboard,
-  readWeeklyLeaderboard: readWeeklyLeaderboard,
+  readActivities: readActivities,
+  readAthletes: readAthletes,
   readProfile: readProfile
 }
