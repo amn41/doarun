@@ -1,3 +1,4 @@
 export const fonts = {
-    main: "Bangers"
+    main: "Bangers",
+    secondary: "Londrina Solid"
 }
