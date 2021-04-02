@@ -130,7 +130,7 @@ export const Leaderboard: React.FC = () => {
       return (
       	<>
           <Typography variant="h1">{'NO ONE HAS RUN YET'}</Typography>
-          <StyledTypography variant="h1">{'WHAT ARE YOU WAITING FOR?'}</StyledTypography>
+          <StyledTypography variant="h2">{'WHAT ARE YOU WAITING FOR?'}</StyledTypography>
       	</>
       )
     }
