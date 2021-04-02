@@ -26,10 +26,22 @@ const readGroups = (token) => {
   })
 }
 
+const createGroup = (token, name, target) => {
+  const header = { Authorization: `Bearer ${token}` }
+  return fetch('/.netlify/functions/group-create', {
+      headers: header,
+      body: JSON.stringify({"name": name, "weekly_target_km": target}),
+      method: 'POST'
+    }).then((response) => {
+    return response.json()
+  })
+}
+
 
 export default {
   readActivities: readActivities,
   readAthletes: readAthletes,
   readProfile: readProfile,
-  readGroups: readGroups
+  readGroups: readGroups,
+  createGroup: createGroup,
 }

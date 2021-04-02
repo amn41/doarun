@@ -37,10 +37,10 @@ exports.handler = async function(event, context) {
         data: data
       }
       return (client.query(q.Create(q.Ref('classes/groups'), groupItem)))
-    }).then(() => {
+    }).then((data) => {
       return {
         statusCode: 200,
-        body: "ok"
+        body: JSON.stringify(data)
       }
     }).catch((error) => {
        console.log('error', error)

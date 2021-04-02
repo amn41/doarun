@@ -24,7 +24,15 @@ class AuthButton extends Component {
 
 export default class Profile extends Component {
     state = {
-      groups: null
+      groups: null,
+      newGroupName: "Running Buds",
+      newGroupTarget: 10,
+    }
+    constructor(props) {
+      super(props)
+      this.handleChangeName = this.handleChangeName.bind(this)
+      this.handleChangeTarget = this.handleChangeTarget.bind(this)
+      this.handleSubmit = this.handleSubmit.bind(this)
     }
     componentDidMount() {
       this.props.user.jwt().then((jwt) =>  {
@@ -57,16 +65,28 @@ export default class Profile extends Component {
         </div>
       )
     }
+    handleChangeName(event) {
+      this.setState({newGroupName: event.target.value}) 
+    }
+    handleChangeTarget(event) {
+      this.setState({newGroupTarget: event.target.value})
+    }
+    handleSubmit() {
+      const { newGroupName, newGroupTarget } = this.state
+      event.preventDefault();
+      this.props.user.jwt().then((jwt) =>  {
+        return api.createGroup(jwt, newGroupName, newGroupTarget)
+      })
+    }
     renderCreateGroup() {
-      //const { creating } = this.state
       return (
        <>
        	 {"Create a new group"}
          <br/>
          <br/>
-       	 <form noValidate autoComplete="off">
-       	   <TextField defaultValue="Running Buds" label="group name" />
-       	   <TextField defaultValue={10} label="weekly target km" />
+       	 <form noValidate autoComplete="off" onSubmit={this.handleSubmit}>
+       	   <TextField value={this.state.newGroupName} onChange={this.handleChangeName} label="group name" />
+       	   <TextField value={this.state.newGroupTarget} onChange={this.handleChangeTarget} label="weekly target km" />
            <Input type="submit" value="Create Group"/>
        	 </form>
         </>
