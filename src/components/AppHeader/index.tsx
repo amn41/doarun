@@ -43,7 +43,7 @@ export const AppHeader: React.FC = (props: any) => {
               <img width="160px" src={logo} alt='logo' aria-label="logo" />
             </Grid>
             <Grid item>
-              <Link to="/profile">
+              <Link to="/">
                 <StyledAvatar alt="profile" title="View Profile" src={profileUrl} />
               </Link>
             </Grid>

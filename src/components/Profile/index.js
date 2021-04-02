@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import stravaButton from '../../assets/btn_strava_connectwith_orange.svg'
 import { Link } from 'react-router-dom'
+import { Typography, TextField, Input } from '@material-ui/core'
 import api from '../../utils/api'
 
 const oauthUrl = "https://www.strava.com/oauth/authorize?client_id=62285&response_type=code&redirect_uri=https://amazing-jang-8a41ee.netlify.app/.netlify/functions/oauth-complete&approval_prompt=force&scope=activity:read_all"
@@ -46,13 +47,30 @@ export default class Profile extends Component {
                const groupId = group.ref["@ref"].id
                return (
                  <Link to={`/${groupId}`}>
-                   {group.data.name} - {group.data.weekly_target_km} km
+                   <Typography variant="h2">
+                     {group.data.name} - {group.data.weekly_target_km} km
+                   </Typography>
                  </Link>
                )
              })
           )}
         </div>
       )
+    }
+    renderCreateGroup() {
+      //const { creating } = this.state
+      return (
+       <>
+       	 {"Create a new group"}
+         <br/>
+         <br/>
+       	 <form noValidate autoComplete="off">
+       	   <TextField defaultValue="Running Buds" label="group name" />
+       	   <TextField defaultValue={10} label="weekly target km" />
+           <Input type="submit" value="Create Group"/>
+       	 </form>
+        </>
+      )      
     }
     renderProfile() {
       const { profile } = this.props
@@ -83,10 +101,10 @@ export default class Profile extends Component {
         <div className="profile-card">
           <div>
             <br/>
-            {this.props.user ? <h1>My Running Groups</h1> : null}
+            {this.props.user ? <Typography variant="h1">{'My Running Groups'}</Typography> : null}
             <br/>
               {this.renderGroups()}
-            <br/>
+              {this.renderCreateGroup()}
             <div>
               {this.renderProfile()}
             </div>
