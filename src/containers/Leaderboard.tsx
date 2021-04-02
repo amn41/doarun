@@ -1,9 +1,10 @@
 import React, { useEffect, useState} from 'react'
 import api from '../utils/api'
 import isLocalHost from '../utils/isLocalHost'
+import { useParams, Link } from "react-router-dom"
 import { groupBy, orderBy, sumBy, maxBy, toPairs, find, partition, reject } from 'lodash'
 
-import { Grid, Table, TableBody, TableRow, TableCell, Typography, Avatar, CircularProgress, Backdrop } from '@material-ui/core'
+import { Grid, Table, TableBody, TableRow, TableCell, Typography, Avatar, CircularProgress, Backdrop, Select, MenuItem } from '@material-ui/core'
 import { fonts } from '../theme/fonts'
 import { withStyles } from '@material-ui/core/styles'
 import { colors } from '../theme/colors'
@@ -67,7 +68,15 @@ const StyledBackdrop = withStyles({
   },
 })(Backdrop)
 
+const StyledSelect = withStyles({
+  root: {
+    margin: '1.67em 0',
+    width: '200px',
+  },
+})(Select)
+
 export const Leaderboard: React.FC = () => {
+  const { groupId }: any = useParams()
   const targetDistance = 10
   const [athletes, setAthletes] = useState([])
   const [latestAthlete, setLatestAthlete] = useState<any>(null)
@@ -90,7 +99,7 @@ export const Leaderboard: React.FC = () => {
   
   useEffect(() => {
     if (athletes.length === 0) {
-      api.readAthletes("testGroupId").then((athletes) => {
+      api.readAthletes(groupId).then((athletes) => {
         if (athletes.message === 'unauthorized') {
           if (isLocalHost()) {
             alert('FaunaDB key is not authorized. Make sure you set it in terminal session where you ran `npm start`. Visit http://bit.ly/set-fauna-key for more info')
@@ -107,7 +116,7 @@ export const Leaderboard: React.FC = () => {
 
   useEffect(() => {
     if (activities.length === 0 && lazyAthletes?.length === 0) {
-      api.readActivities("testGroupId").then((activities) => {
+      api.readActivities(groupId).then((activities) => {
         setActivities(activities.data)
         setIsLoading(false)
       })
@@ -227,10 +236,11 @@ export const Leaderboard: React.FC = () => {
 
   const renderGroupSelector = () => {
     return ( 
-      <select>
-        <option value="Paperback Runners">{"Paperback Runners"}</option>
-        <option value="none">{"create new group"}</option>
-      </select>
+      <StyledSelect
+        value={groupId}
+      >
+        <Link to={`/${groupId}`}>Paperback Runners</Link>
+      </StyledSelect>
     )
   }
 

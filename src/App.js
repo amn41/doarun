@@ -84,8 +84,8 @@ export default class App extends Component {
           <Router>
             <AppHeader profile={this.state.profile} />
             <Switch>
-              <PrivateRoute exact path="/" component={Leaderboard} isAuthenticated={this.state.isAuthenticated} />
-              <Route path="/profile" >
+              <PrivateRoute exact path="/:groupId" component={Leaderboard} isAuthenticated={this.state.isAuthenticated} />
+              <Route path="/" >
                 <Profile isAuthenticated={this.state.isAuthenticated} user={this.state.user} profile={this.state.profile} authenticate={this.authenticate} signout={this.signout} />
               </Route>
             </Switch>

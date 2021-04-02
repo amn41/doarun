@@ -43,8 +43,9 @@ export default class Profile extends Component {
         <div>
           {groups && (
              groups.data.map((group) => {
+               const groupId = group.ref["@ref"].id
                return (
-                 <Link to="/">
+                 <Link to={`/${groupId}`}>
                    {group.data.name} - {group.data.weekly_target_km} km
                  </Link>
                )
