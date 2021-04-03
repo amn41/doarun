@@ -5,7 +5,7 @@ import AppHeader from './components/AppHeader'
 import netlifyIdentity from 'netlify-identity-widget'
 import api from './utils/api'
 import {
-  BrowserRouter as Router,
+  HashRouter as Router,
   Route,
   Switch,
   Redirect
@@ -25,7 +25,7 @@ function PrivateRoute({ component: Component, isAuthenticated, ...rest }) {
         ) : (
           <Redirect
             to={{
-              pathname: '/profile',
+              pathname: '/',
               state: { from: props.location }
             }}
           />
