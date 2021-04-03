@@ -40,7 +40,9 @@ export const AppHeader: React.FC = (props: any) => {
         <StyledToolbar>
           <Grid container justify="space-between" alignItems="center">
             <Grid item>
+              <Link to="/">
               <img width="160px" src={logo} alt='logo' aria-label="logo" />
+              </Link>
             </Grid>
             <Grid item>
               <Link to="/profile">
