@@ -37,6 +37,14 @@ const createGroup = (token, name, target) => {
   })
 }
 
+const deleteGroup = (token, groupId) => {
+  const header = { Authorization: `Bearer ${token}` }
+  return fetch(`/.netlify/functions/group-delete?groupId=${groupId}`, {
+      headers: header,
+    }).then((response) => {
+    return response.json()
+  })
+}
 
 export default {
   readActivities: readActivities,
@@ -44,4 +52,5 @@ export default {
   readProfile: readProfile,
   readGroups: readGroups,
   createGroup: createGroup,
+  deleteGroup: deleteGroup,
 }

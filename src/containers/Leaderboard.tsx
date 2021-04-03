@@ -3,8 +3,8 @@ import api from '../utils/api'
 import isLocalHost from '../utils/isLocalHost'
 import { useParams, Link } from "react-router-dom"
 import { groupBy, orderBy, sumBy, maxBy, toPairs, find, partition, reject } from 'lodash'
-
-import { Grid, Table, TableBody, TableRow, TableCell, Typography, Avatar, CircularProgress, Backdrop, Select, MenuItem } from '@material-ui/core'
+import { useClipboard } from 'use-clipboard-copy'
+import { Grid, Table, TableBody, TableRow, TableCell, Typography, Avatar, CircularProgress, Backdrop, Select, Button, Menu, MenuItem } from '@material-ui/core'
 import { fonts } from '../theme/fonts'
 import { withStyles } from '@material-ui/core/styles'
 import { colors } from '../theme/colors'
@@ -75,7 +75,7 @@ const StyledSelect = withStyles({
   },
 })(Select)
 
-export const Leaderboard: React.FC = () => {
+export const Leaderboard: React.FC = (props: any) => {
   const { groupId }: any = useParams()
   const targetDistance = 10
   const [athletes, setAthletes] = useState([])
@@ -86,6 +86,16 @@ export const Leaderboard: React.FC = () => {
     reject(athletes, (a: any) => find(activities, ((act: any) => a.id === act.data.athlete.id))) :
     athletes
   const [isLoading, setIsLoading] = useState(true)
+  const [anchorEl, setAnchorEl] = React.useState(null)
+
+  const handleClickGroupMenu = (event: any) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleCloseGroupMenu = () => {
+    setAnchorEl(null);
+  };
+  const clipboard = useClipboard()
 
   useEffect(() => {
     if (activities?.length > 0) {
@@ -235,39 +245,96 @@ export const Leaderboard: React.FC = () => {
   }
 
   const renderGroupSelector = () => {
-    return ( 
-      <StyledSelect
-        value={groupId}
-      >
-        <Link to={`/${groupId}`}>Paperback Runners</Link>
-      </StyledSelect>
+    if (props.groups && props.groups.data.length > 0) {
+      return (
+        <div>
+          <Button aria-controls="simple-menu" aria-haspopup="true" onClick={handleClickGroupMenu}>
+            Switch Group
+          </Button>
+          <Menu
+            id="simple-menu"
+            anchorEl={anchorEl}
+            keepMounted
+            open={Boolean(anchorEl)}
+            onClose={handleCloseGroupMenu}
+          >
+            {
+              props.groups.data.map((group: any) => {
+              const id = group.ref["@ref"].id
+              return (
+                <MenuItem>
+                  <Link to={`../${id}`}>{group.data.name}</Link>
+                </MenuItem>
+              )
+             })
+            }
+          </Menu>
+        </div>
+      )
+    } else {
+      return null
+    } 
+  }
+
+  const renderSharingLink = () => {
+    const url = `https://app.doarun.com/#/${groupId}`
+    return (
+      <div>
+        <Typography variant="body2">{'Invite friends to join this group'}</Typography>
+        <input ref={clipboard.target} value={url} readOnly />
+        <button onClick={clipboard.copy}>Copy</button>
+      </div>
+    )
+  }
+
+  const isMemberOfGroup = () => {
+    console.log("groups data", props.groups.data)
+    console.log("group id ",groupId)
+    return props.groups && find(
+      props.groups.data,
+      (g) => g.ref["@ref"].id == groupId
+    )
+  }
+
+  const renderJoinGroup = () => {
+    return (
+      <>
+        <Typography variant={"body2"}>{"You aren't a member of this group yet!"}</Typography>
+        <button>JOIN</button>    
+      </>
     )
   }
 
   return (
     <StyledLeaderboard>
-      <Grid container justify='space-around'>
-        {isLoading && (
-          <StyledBackdrop open={true}>
-            <img src="https://assets.website-files.com/603a5571f4f45c0f0a508518/6060b6f45c05fb2e122d45c5_animation_500_kmt2ho84.gif" width="40%" alt="loading running stats" />
-            <br />
-            <CircularProgress />
-          </StyledBackdrop>
-        )}
-        {!isLoading && (
-          <>
-            <StyledGrid item>
-              {renderGroupSelector()}
-            </StyledGrid>
-            <StyledGrid item>
-              {renderWeeklyLeaderboard()}
-            </StyledGrid>
-            <StyledGrid item>
-              {renderLatestActivity()}
-            </StyledGrid>
-          </>
-        )}
-      </Grid>
+      	<Grid container justify='space-around'>
+      	  {isLoading && (
+      	    <StyledBackdrop open={true}>
+      	      <img src="https://assets.website-files.com/603a5571f4f45c0f0a508518/6060b6f45c05fb2e122d45c5_animation_500_kmt2ho84.gif" width="40%" alt="loading running stats" />
+      	      <br />
+      	      <CircularProgress />
+      	    </StyledBackdrop>
+      	  )}
+      	  {!isLoading && isMemberOfGroup() && (
+      	      <>
+      	        <StyledGrid item>
+      	          {renderGroupSelector()}
+      	        </StyledGrid>
+      	        <StyledGrid item>
+      	          {renderWeeklyLeaderboard()}
+      	          {renderSharingLink()}
+      	        </StyledGrid>
+      	        <StyledGrid item>
+      	          {renderLatestActivity()}
+      	        </StyledGrid>
+      	      </>
+          )}
+          {!isLoading && !isMemberOfGroup() && (
+      	      <StyledGrid item>
+      	        {renderJoinGroup()}
+      	      </StyledGrid>
+      	  )}
+      	</Grid>
     </StyledLeaderboard>
   )
 }
