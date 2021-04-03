@@ -5,7 +5,7 @@ import AppHeader from './components/AppHeader'
 import netlifyIdentity from 'netlify-identity-widget'
 import api from './utils/api'
 import {
-  HashRouter as Router,
+  BrowserRouter as Router,
   Route,
   Switch,
   Redirect
@@ -52,18 +52,24 @@ export default class App extends Component {
   authenticate() {
     netlifyIdentity.open();
     netlifyIdentity.on('login', user => {
-      this.setState({
-        isAuthenticated: true,
-        user: user
-      })
-    });
+       user.jwt().then((jwt) => {
+         return api.readGroups(jwt)
+       }).then((groups) => {
+    	 this.setState({
+    	   groups: groups,
+           isAuthenticated: true,
+           user: user
+         })
+       })      
+    })
   }
   signout() {
     netlifyIdentity.logout();
     netlifyIdentity.on('logout', () => {
       this.setState({
         isAuthenticated: false,
-        user: null
+        user: null,
+        groups: null
       })
     });
   }
@@ -100,7 +106,7 @@ export default class App extends Component {
                 <Leaderboard groups={this.state.groups} jwt={this.state.jwt} />
               </PrivateRoute>
               <Route path="/" >
-                <Profile isAuthenticated={this.state.isAuthenticated} user={this.state.user} profile={this.state.profile} authenticate={this.authenticate} signout={this.signout} />
+                <Profile isAuthenticated={this.state.isAuthenticated} user={this.state.user} groups={this.state.groups} profile={this.state.profile} authenticate={this.authenticate} signout={this.signout} />
               </Route>
             </Switch>
           </Router>

@@ -43,17 +43,8 @@ export default class Profile extends Component {
       this.handleChangeTarget = this.handleChangeTarget.bind(this)
       this.handleSubmit = this.handleSubmit.bind(this)
     }
-    componentDidMount() {
-      this.props.user.jwt().then((jwt) =>  {
-        return api.readGroups(jwt)
-      }).then((groups) => {
-        this.setState({
-          groups: groups
-        })
-      })
-    }
     renderGroups() {
-      const { groups } = this.state
+      const { groups } = this.props
       if(groups) {
         console.log(groups.data)
       }
@@ -107,18 +98,22 @@ export default class Profile extends Component {
       })
     }
     renderCreateGroup() {
-      return (
-       <>
-       	 {"Create a new group"}
-         <br/>
-         <br/>
-       	 <form noValidate autoComplete="off" onSubmit={this.handleSubmit}>
-       	   <TextField value={this.state.newGroupName} onChange={this.handleChangeName} label="group name" />
-       	   <TextField value={this.state.newGroupTarget} onChange={this.handleChangeTarget} label="weekly target km" />
-           <Input type="submit" value="Create Group"/>
-       	 </form>
-        </>
-      )      
+      if (this.props.isAuthenticated) {
+      	return (
+      	 <>
+      	 	 {"Create a new group"}
+      	   <br/>
+      	   <br/>
+      	 	 <form noValidate autoComplete="off" onSubmit={this.handleSubmit}>
+      	 	   <TextField value={this.state.newGroupName} onChange={this.handleChangeName} label="group name" />
+      	 	   <TextField value={this.state.newGroupTarget} onChange={this.handleChangeTarget} label="weekly target km" />
+      	     <Input type="submit" value="Create Group"/>
+      	 	 </form>
+      	  </>
+      	)      
+      } else {
+        return null
+      }
     }
     renderProfile() {
       const { profile } = this.props
