@@ -41,7 +41,8 @@ export default class App extends Component {
     isAuthenticated: netlifyIdentity.currentUser() != null,
     user: netlifyIdentity.currentUser(),
     profile: null,
-    groups: []
+    groups: null,
+    jwt: null,
   }
   constructor(props) {
     super(props);
@@ -70,6 +71,9 @@ export default class App extends Component {
     const { user } = this.state
     if (user) {
        user.jwt().then((jwt) => {
+         this.setState({
+           jwt: jwt
+         })
          return Promise.all([api.readProfile(jwt), jwt])
        }).then(([profile, jwt]) => {
     	 this.setState({
@@ -79,6 +83,7 @@ export default class App extends Component {
        }).then((jwt) => {
          return api.readGroups(jwt)
        }).then((groups) => {
+         console.log(groups)
     	 this.setState({
     	   groups: groups
          })
@@ -93,7 +98,7 @@ export default class App extends Component {
             <AppHeader profile={this.state.profile} />
             <Switch>
               <PrivateRoute exact path="/:groupId" isAuthenticated={this.state.isAuthenticated}>
-                <Leaderboard groups={this.state.groups} />
+                <Leaderboard groups={this.state.groups} jwt={this.state.jwt} />
               </PrivateRoute>
               <Route path="/" >
                 <Profile isAuthenticated={this.state.isAuthenticated} user={this.state.user} profile={this.state.profile} authenticate={this.authenticate} signout={this.signout} />

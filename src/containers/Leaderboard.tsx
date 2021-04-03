@@ -108,7 +108,7 @@ export const Leaderboard: React.FC = (props: any) => {
 
   
   useEffect(() => {
-    if (athletes.length === 0) {
+    if (athletes.length === 0 && isMemberOfGroup()) {
       api.readAthletes(groupId).then((athletes) => {
         if (athletes.message === 'unauthorized') {
           if (isLocalHost()) {
@@ -125,7 +125,7 @@ export const Leaderboard: React.FC = (props: any) => {
   }, [athletes])
 
   useEffect(() => {
-    if (activities.length === 0 && lazyAthletes?.length === 0) {
+    if (activities.length === 0 && lazyAthletes?.length === 0 && isMemberOfGroup()) {
       api.readActivities(groupId).then((activities) => {
         setActivities(activities.data)
         setIsLoading(false)
@@ -134,6 +134,8 @@ export const Leaderboard: React.FC = (props: any) => {
         console.error(error)
         setIsLoading(false)
       })
+    } else if (!isMemberOfGroup()) {
+        setIsLoading(false)
     }
   }, [activities, lazyAthletes])
 
@@ -288,19 +290,24 @@ export const Leaderboard: React.FC = (props: any) => {
   }
 
   const isMemberOfGroup = () => {
-    console.log("groups data", props.groups.data)
-    console.log("group id ",groupId)
     return props.groups && find(
       props.groups.data,
       (g) => g.ref["@ref"].id == groupId
     )
   }
 
+  const joinGroup = () => {
+    api.joinGroup(props.jwt, groupId)
+    .then((ret) => {
+      console.log("return ",ret)
+    })
+  }
+
   const renderJoinGroup = () => {
     return (
       <>
         <Typography variant={"body2"}>{"You aren't a member of this group yet!"}</Typography>
-        <button>JOIN</button>    
+        <button onClick={joinGroup}>JOIN</button>    
       </>
     )
   }

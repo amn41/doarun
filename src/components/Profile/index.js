@@ -149,7 +149,7 @@ export default class Profile extends Component {
         <div className="profile-card">
           <div>
             <br/>
-            {this.props.user ? <Typography variant="h1">{'My Running Groups'}</Typography> : null}
+            {this.props.user ? <Typography variant="h1">{"I'm Running With"}</Typography> : null}
             <br/>
               {this.renderGroups()}
               {this.renderCreateGroup()}

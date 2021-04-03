@@ -46,6 +46,15 @@ const deleteGroup = (token, groupId) => {
   })
 }
 
+const joinGroup = (token, groupId) => {
+  const header = { Authorization: `Bearer ${token}` }
+  return fetch(`/.netlify/functions/group-join?groupId=${groupId}`, {
+      headers: header,
+    }).then((response) => {
+    return response.json()
+  })
+}
+
 export default {
   readActivities: readActivities,
   readAthletes: readAthletes,
@@ -53,4 +62,5 @@ export default {
   readGroups: readGroups,
   createGroup: createGroup,
   deleteGroup: deleteGroup,
+  joinGroup: joinGroup,
 }
