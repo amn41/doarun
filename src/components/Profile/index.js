@@ -86,7 +86,7 @@ export default class Profile extends Component {
       )
     }
     handleRequestDelete(groupId, name) {
-      const shouldDelete = confirm(`Do you really want to delete the group ${name}? This cannot be undone`)
+      const shouldDelete = confirm(`Do you really want to delete the group ${name}? This cannot be undone`) // eslint-disable-line
       if (shouldDelete) {
       	this.props.user.jwt().then((jwt) =>  {
       	  return api.deleteGroup(jwt, groupId)
@@ -101,7 +101,7 @@ export default class Profile extends Component {
     }
     handleSubmit() {
       const { newGroupName, newGroupTarget } = this.state
-      event.preventDefault();
+      event.preventDefault() // eslint-disable-line
       this.props.user.jwt().then((jwt) =>  {
         return api.createGroup(jwt, newGroupName, newGroupTarget)
       })

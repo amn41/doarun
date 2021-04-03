@@ -1,10 +1,10 @@
 import React, { useEffect, useState} from 'react'
 import api from '../utils/api'
 import isLocalHost from '../utils/isLocalHost'
-import { useParams, Link, useHistory } from "react-router-dom"
+import { useParams, useHistory } from "react-router-dom"
 import { groupBy, orderBy, sumBy, maxBy, toPairs, find, partition, reject, map } from 'lodash'
 import { useClipboard } from 'use-clipboard-copy'
-import { Grid, Table, TableBody, TableRow, TableCell, Typography, Avatar, CircularProgress, Backdrop, Select, Button, Menu, MenuItem } from '@material-ui/core'
+import { Grid, Table, TableBody, TableRow, TableCell, Typography, Avatar, CircularProgress, Backdrop, Button, Menu, MenuItem } from '@material-ui/core'
 import { fonts } from '../theme/fonts'
 import { withStyles } from '@material-ui/core/styles'
 import { colors } from '../theme/colors'
@@ -69,12 +69,6 @@ const StyledBackdrop = withStyles({
   },
 })(Backdrop)
 
-const StyledSelect = withStyles({
-  root: {
-    margin: '1.67em 0',
-    width: '200px',
-  },
-})(Select)
 
 export const Leaderboard: React.FC = (props: any) => {
   const { groupId }: any = useParams()
@@ -124,7 +118,7 @@ export const Leaderboard: React.FC = (props: any) => {
       })
       .catch((error) => console.error(error))
     }
-  }, [athletes])
+  }, [athletes, groupId])
 
   useEffect(() => {
     if (activities.length === 0 && lazyAthletes?.length === 0) {
@@ -139,7 +133,7 @@ export const Leaderboard: React.FC = (props: any) => {
     }/* else if (!isMemberOfGroup()) {
         setIsLoading(false)
     }*/
-  }, [activities, lazyAthletes])
+  }, [activities, lazyAthletes, groupId])
 
   const renderDistance = (distance: number) => {
     return ((Math.round(distance * 10) / 10).toString() + " km")
@@ -260,7 +254,7 @@ export const Leaderboard: React.FC = (props: any) => {
     return map(
       find(
         props.groups.data,
-        (g) => g.ref["@ref"].id == groupId
+        (g) => g.ref["@ref"].id === groupId
       ),
       (g) => g.name
     )
@@ -313,7 +307,7 @@ export const Leaderboard: React.FC = (props: any) => {
   const isMemberOfGroup = () => {
     return props.groups && find(
       props.groups.data,
-      (g) => g.ref["@ref"].id == groupId
+      (g) => g.ref["@ref"].id === groupId
     )
   }
 
