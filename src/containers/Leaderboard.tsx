@@ -2,13 +2,14 @@ import React, { useEffect, useState} from 'react'
 import api from '../utils/api'
 import isLocalHost from '../utils/isLocalHost'
 import { useParams, Link, useHistory } from "react-router-dom"
-import { groupBy, orderBy, sumBy, maxBy, toPairs, find, partition, reject } from 'lodash'
+import { groupBy, orderBy, sumBy, maxBy, toPairs, find, partition, reject, map } from 'lodash'
 import { useClipboard } from 'use-clipboard-copy'
 import { Grid, Table, TableBody, TableRow, TableCell, Typography, Avatar, CircularProgress, Backdrop, Select, Button, Menu, MenuItem } from '@material-ui/core'
 import { fonts } from '../theme/fonts'
 import { withStyles } from '@material-ui/core/styles'
 import { colors } from '../theme/colors'
 import { styled } from '@material-ui/core/styles';
+import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown'
 import theme from '../theme/themed'
 
 const StyledLeaderboard = styled('div')({
@@ -252,13 +253,26 @@ export const Leaderboard: React.FC = (props: any) => {
     setActivities([])
     setAnchorEl(null);    
   }
+  const groupName = () => {
+    if (!props.groups || !groupId) {
+      return null
+    }
+    return map(
+      find(
+        props.groups.data,
+        (g) => g.ref["@ref"].id == groupId
+      ),
+      (g) => g.name
+    )
+  }
 
   const renderGroupSelector = () => {
     if (props.groups && props.groups.data.length > 0) {
       return (
         <div>
           <Button aria-controls="simple-menu" aria-haspopup="true" onClick={handleClickGroupMenu}>
-            Switch Group
+            {groupName()}
+            <KeyboardArrowDownIcon />
           </Button>
           <Menu
             id="simple-menu"
