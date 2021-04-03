@@ -1,7 +1,7 @@
 import React, { useEffect, useState} from 'react'
 import api from '../utils/api'
 import isLocalHost from '../utils/isLocalHost'
-import { useParams, Link } from "react-router-dom"
+import { useParams, Link, useHistory } from "react-router-dom"
 import { groupBy, orderBy, sumBy, maxBy, toPairs, find, partition, reject } from 'lodash'
 import { useClipboard } from 'use-clipboard-copy'
 import { Grid, Table, TableBody, TableRow, TableCell, Typography, Avatar, CircularProgress, Backdrop, Select, Button, Menu, MenuItem } from '@material-ui/core'
@@ -87,6 +87,7 @@ export const Leaderboard: React.FC = (props: any) => {
     athletes
   const [isLoading, setIsLoading] = useState(true)
   const [anchorEl, setAnchorEl] = React.useState(null)
+  const history = useHistory()
 
   const handleClickGroupMenu = (event: any) => {
     setAnchorEl(event.currentTarget);
@@ -108,7 +109,7 @@ export const Leaderboard: React.FC = (props: any) => {
 
   
   useEffect(() => {
-    if (athletes.length === 0 && isMemberOfGroup()) {
+    if (athletes.length === 0) {
       api.readAthletes(groupId).then((athletes) => {
         if (athletes.message === 'unauthorized') {
           if (isLocalHost()) {
@@ -125,7 +126,7 @@ export const Leaderboard: React.FC = (props: any) => {
   }, [athletes])
 
   useEffect(() => {
-    if (activities.length === 0 && lazyAthletes?.length === 0 && isMemberOfGroup()) {
+    if (activities.length === 0 && lazyAthletes?.length === 0) {
       api.readActivities(groupId).then((activities) => {
         setActivities(activities.data)
         setIsLoading(false)
@@ -134,9 +135,9 @@ export const Leaderboard: React.FC = (props: any) => {
         console.error(error)
         setIsLoading(false)
       })
-    } else if (!isMemberOfGroup()) {
+    }/* else if (!isMemberOfGroup()) {
         setIsLoading(false)
-    }
+    }*/
   }, [activities, lazyAthletes])
 
   const renderDistance = (distance: number) => {
@@ -245,6 +246,12 @@ export const Leaderboard: React.FC = (props: any) => {
       </>
     )
   }
+  const handleGroupChange = (id: any) => {
+    history.push(`/${id}`)
+    setAthletes([])
+    setActivities([])
+    setAnchorEl(null);    
+  }
 
   const renderGroupSelector = () => {
     if (props.groups && props.groups.data.length > 0) {
@@ -264,8 +271,8 @@ export const Leaderboard: React.FC = (props: any) => {
               props.groups.data.map((group: any) => {
               const id = group.ref["@ref"].id
               return (
-                <MenuItem>
-                  <Link to={`../${id}`}>{group.data.name}</Link>
+                <MenuItem onClick={() => handleGroupChange(id)}>
+                  {group.data.name}
                 </MenuItem>
               )
              })

@@ -5,7 +5,7 @@ import AppHeader from './components/AppHeader'
 import netlifyIdentity from 'netlify-identity-widget'
 import api from './utils/api'
 import {
-  HashRouter as Router,
+  BrowserRouter as Router,
   Route,
   Switch,
   Redirect
@@ -83,7 +83,6 @@ export default class App extends Component {
        }).then((jwt) => {
          return api.readGroups(jwt)
        }).then((groups) => {
-         console.log(groups)
     	 this.setState({
     	   groups: groups
          })
