@@ -32,6 +32,11 @@ const theme = createMuiTheme({
             padding: '0 1rem',
             margin: '0.67em 0'
         },
+        h3: {
+          fontSize: '0.6em',
+          fontWeight: 'bold',
+          fontFamily: fonts.secondary,
+        },
         h4: {
             fontFamily: fonts.main,
             letterSpacing: '0.02em',
