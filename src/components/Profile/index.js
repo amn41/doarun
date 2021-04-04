@@ -4,9 +4,7 @@ import { Link } from 'react-router-dom'
 import { Typography, TextField, Input, Table, TableBody, TableRow, TableCell, IconButton, Grid, InputAdornment } from '@material-ui/core'
 import DeleteIcon from '@material-ui/icons/Delete'
 import { styled, withStyles } from '@material-ui/core/styles'
-import { colors } from '../../theme/colors'
 import { fonts } from '../../theme/fonts'
-import theme from '../../theme/themed'
 import api from '../../utils/api'
 
 const oauthUrl = "https://www.strava.com/oauth/authorize?client_id=62285&response_type=code&redirect_uri=https://amazing-jang-8a41ee.netlify.app/.netlify/functions/oauth-complete&approval_prompt=force&scope=activity:read_all"
