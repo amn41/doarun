@@ -1,13 +1,15 @@
 import React, { useEffect, useState} from 'react'
 import api from '../utils/api'
 import isLocalHost from '../utils/isLocalHost'
-import { groupBy, orderBy, sumBy, maxBy, toPairs, find, partition, reject } from 'lodash'
-
-import { Grid, Table, TableBody, TableRow, TableCell, Typography, Avatar, CircularProgress, Backdrop } from '@material-ui/core'
+import { useParams, useHistory } from "react-router-dom"
+import { groupBy, orderBy, sumBy, maxBy, toPairs, find, partition, reject, map } from 'lodash'
+import { useClipboard } from 'use-clipboard-copy'
+import { Grid, Table, TableBody, TableRow, TableCell, Typography, Avatar, CircularProgress, Backdrop, Button, Menu, MenuItem } from '@material-ui/core'
 import { fonts } from '../theme/fonts'
 import { withStyles } from '@material-ui/core/styles'
 import { colors } from '../theme/colors'
 import { styled } from '@material-ui/core/styles';
+import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown'
 import theme from '../theme/themed'
 
 const StyledLeaderboard = styled('div')({
@@ -67,7 +69,9 @@ const StyledBackdrop = withStyles({
   },
 })(Backdrop)
 
-export const Leaderboard: React.FC = () => {
+
+export const Leaderboard: React.FC = (props: any) => {
+  const { groupId }: any = useParams()
   const targetDistance = 10
   const [athletes, setAthletes] = useState([])
   const [latestAthlete, setLatestAthlete] = useState<any>(null)
@@ -77,6 +81,17 @@ export const Leaderboard: React.FC = () => {
     reject(athletes, (a: any) => find(activities, ((act: any) => a.id === act.data.athlete.id))) :
     athletes
   const [isLoading, setIsLoading] = useState(true)
+  const [anchorEl, setAnchorEl] = React.useState(null)
+  const history = useHistory()
+
+  const handleClickGroupMenu = (event: any) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleCloseGroupMenu = () => {
+    setAnchorEl(null);
+  };
+  const clipboard = useClipboard()
 
   useEffect(() => {
     if (activities?.length > 0) {
@@ -90,7 +105,7 @@ export const Leaderboard: React.FC = () => {
   
   useEffect(() => {
     if (athletes.length === 0) {
-      api.readAllAthletes().then((athletes) => {
+      api.readAthletes(groupId).then((athletes) => {
         if (athletes.message === 'unauthorized') {
           if (isLocalHost()) {
             alert('FaunaDB key is not authorized. Make sure you set it in terminal session where you ran `npm start`. Visit http://bit.ly/set-fauna-key for more info')
@@ -103,11 +118,11 @@ export const Leaderboard: React.FC = () => {
       })
       .catch((error) => console.error(error))
     }
-  }, [athletes])
+  }, [athletes, groupId])
 
   useEffect(() => {
     if (activities.length === 0 && lazyAthletes?.length === 0) {
-      api.readAll().then((activities) => {
+      api.readActivities(groupId).then((activities) => {
         setActivities(activities.data)
         setIsLoading(false)
       })
@@ -115,8 +130,10 @@ export const Leaderboard: React.FC = () => {
         console.error(error)
         setIsLoading(false)
       })
-    }
-  }, [activities, lazyAthletes])
+    }/* else if (!isMemberOfGroup()) {
+        setIsLoading(false)
+    }*/
+  }, [activities, lazyAthletes, groupId])
 
   const renderDistance = (distance: number) => {
     return ((Math.round(distance * 10) / 10).toString() + " km")
@@ -224,28 +241,122 @@ export const Leaderboard: React.FC = () => {
       </>
     )
   }
+  const handleGroupChange = (id: any) => {
+    history.push(`/${id}`)
+    setAthletes([])
+    setActivities([])
+    setAnchorEl(null);    
+  }
+  const groupName = () => {
+    if (!props.groups || !groupId) {
+      return null
+    }
+    return map(
+      find(
+        props.groups.data,
+        (g) => g.ref["@ref"].id === groupId
+      ),
+      (g) => g.name
+    )
+  }
+
+  const renderGroupSelector = () => {
+    if (props.groups && props.groups.data.length > 0) {
+      return (
+        <div>
+          <Button aria-controls="simple-menu" aria-haspopup="true" onClick={handleClickGroupMenu}>
+            {groupName()}
+            <KeyboardArrowDownIcon />
+          </Button>
+          <Menu
+            id="simple-menu"
+            anchorEl={anchorEl}
+            keepMounted
+            open={Boolean(anchorEl)}
+            onClose={handleCloseGroupMenu}
+          >
+            {
+              props.groups.data.map((group: any) => {
+              const id = group.ref["@ref"].id
+              return (
+                <MenuItem onClick={() => handleGroupChange(id)}>
+                  {group.data.name}
+                </MenuItem>
+              )
+             })
+            }
+          </Menu>
+        </div>
+      )
+    } else {
+      return null
+    } 
+  }
+
+  const renderSharingLink = () => {
+    const url = `https://app.doarun.com/${groupId}`
+    return (
+      <div>
+        <Typography variant="body2">{'Invite friends to join this group'}</Typography>
+        <input ref={clipboard.target} value={url} readOnly />
+        <button onClick={clipboard.copy}>Copy</button>
+      </div>
+    )
+  }
+
+  const isMemberOfGroup = () => {
+    return props.groups && find(
+      props.groups.data,
+      (g) => g.ref["@ref"].id === groupId
+    )
+  }
+
+  const joinGroup = () => {
+    api.joinGroup(props.jwt, groupId)
+    .then((ret) => {
+      console.log("return ",ret)
+    })
+  }
+
+  const renderJoinGroup = () => {
+    return (
+      <>
+        <Typography variant={"body2"}>{"You aren't a member of this group yet!"}</Typography>
+        <button onClick={joinGroup}>JOIN</button>    
+      </>
+    )
+  }
 
   return (
     <StyledLeaderboard>
-      <Grid container justify='space-around'>
-        {isLoading && (
-          <StyledBackdrop open={true}>
-            <img src="https://assets.website-files.com/603a5571f4f45c0f0a508518/6060b6f45c05fb2e122d45c5_animation_500_kmt2ho84.gif" width="40%" alt="loading running stats" />
-            <br />
-            <CircularProgress />
-          </StyledBackdrop>
-        )}
-        {!isLoading && (
-          <>
-            <StyledGrid item>
-              {renderWeeklyLeaderboard()}
-            </StyledGrid>
-            <StyledGrid item>
-              {renderLatestActivity()}
-            </StyledGrid>
-          </>
-        )}
-      </Grid>
+      	<Grid container justify='space-around'>
+      	  {isLoading && (
+      	    <StyledBackdrop open={true}>
+      	      <img src="https://assets.website-files.com/603a5571f4f45c0f0a508518/6060b6f45c05fb2e122d45c5_animation_500_kmt2ho84.gif" width="40%" alt="loading running stats" />
+      	      <br />
+      	      <CircularProgress />
+      	    </StyledBackdrop>
+      	  )}
+      	  {!isLoading && isMemberOfGroup() && (
+      	      <>
+      	        <StyledGrid item>
+      	          {renderGroupSelector()}
+      	        </StyledGrid>
+      	        <StyledGrid item>
+      	          {renderWeeklyLeaderboard()}
+      	          {renderSharingLink()}
+      	        </StyledGrid>
+      	        <StyledGrid item>
+      	          {renderLatestActivity()}
+      	        </StyledGrid>
+      	      </>
+          )}
+          {!isLoading && !isMemberOfGroup() && (
+      	      <StyledGrid item>
+      	        {renderJoinGroup()}
+      	      </StyledGrid>
+      	  )}
+      	</Grid>
     </StyledLeaderboard>
   )
 }
