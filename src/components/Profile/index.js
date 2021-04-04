@@ -101,7 +101,9 @@ export default class Profile extends Component {
       if (shouldDelete) {
       	this.props.user.jwt().then((jwt) =>  {
       	  return api.deleteGroup(jwt, groupId)
-      	})
+      	}).then(() => {
+          this.props.updateGroups()
+        })
       }
     }
     handleChangeName(event) {
@@ -115,7 +117,9 @@ export default class Profile extends Component {
       event.preventDefault() // eslint-disable-line
       this.props.user.jwt().then((jwt) =>  {
         return api.createGroup(jwt, newGroupName, newGroupTarget)
-      })
+      }).then(() => 
+        this.props.updateGroups()
+      )
     }
     renderCreateGroup() {
       if (this.props.isAuthenticated) {

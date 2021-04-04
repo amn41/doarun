@@ -48,6 +48,7 @@ export default class App extends Component {
     super(props);
     this.authenticate = this.authenticate.bind(this);
     this.signout = this.signout.bind(this);
+    this.updateGroups = this.updateGroups.bind(this);
   } 
   authenticate() {
     netlifyIdentity.open();
@@ -72,6 +73,15 @@ export default class App extends Component {
         groups: null
       })
     });
+  }
+  updateGroups() {
+    const { jwt } = this.state
+    api.readGroups(jwt)
+    .then((groups) => {
+    	 this.setState({
+    	   groups: groups
+       })
+    })
   }
   componentDidMount() {
     const { user } = this.state
@@ -106,7 +116,7 @@ export default class App extends Component {
                 <Leaderboard groups={this.state.groups} jwt={this.state.jwt} />
               </PrivateRoute>
               <Route path="/" >
-                <Profile isAuthenticated={this.state.isAuthenticated} user={this.state.user} groups={this.state.groups} profile={this.state.profile} authenticate={this.authenticate} signout={this.signout} />
+                <Profile isAuthenticated={this.state.isAuthenticated} user={this.state.user} groups={this.state.groups} profile={this.state.profile} authenticate={this.authenticate} updateGroups={this.updateGroups} signout={this.signout} />
               </Route>
             </Switch>
           </Router>

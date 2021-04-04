@@ -13,7 +13,12 @@ exports.handler = (event, context) => {
     q.Delete(
       q.Ref(q.Collection("groups"), groupId)
     )
-  )).catch((error) => {
+  )).then(() => {
+     return {
+       statusCode: 200,
+       body: "ok"
+     }
+  }).catch((error) => {
      console.log('error', error)
      return {
        statusCode: 400,
