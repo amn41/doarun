@@ -294,7 +294,7 @@ export const Leaderboard: React.FC = (props: any) => {
   }
 
   const renderSharingLink = () => {
-    const url = `https://app.doarun.com/#/${groupId}`
+    const url = `https://app.doarun.com/${groupId}`
     return (
       <div>
         <Typography variant="body2">{'Invite friends to join this group'}</Typography>
