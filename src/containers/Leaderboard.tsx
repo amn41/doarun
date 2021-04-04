@@ -44,7 +44,9 @@ const StyledTypography = withStyles({
 const MuiTableCell = withStyles({
   root: {
     borderBottom: "none",
-  }
+    padding: 0,
+    justifyContent: 'space-between',
+  },
 })(TableCell)
 
 const TableCellNoPadding = withStyles({
@@ -227,7 +229,7 @@ export const Leaderboard: React.FC = () => {
 
   return (
     <StyledLeaderboard>
-      <Grid container justify='space-around'>
+      <Grid container justify='space-between'>
         {isLoading && (
           <StyledBackdrop open={true}>
             <img src="https://assets.website-files.com/603a5571f4f45c0f0a508518/6060b6f45c05fb2e122d45c5_animation_500_kmt2ho84.gif" width="40%" alt="loading running stats" />
