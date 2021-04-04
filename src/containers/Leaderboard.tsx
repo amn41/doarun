@@ -44,7 +44,7 @@ const StyledTypography = withStyles({
 const MuiTableCell = withStyles({
   root: {
     borderBottom: "none",
-    padding: 0,
+    padding: 8,
   },
 })(TableCell)
 
