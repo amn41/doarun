@@ -8,5 +8,6 @@ export const colors = {
     oasics: '#86A873',
     oasicsLight: '#C4EBC8',
     brooks: '#FBF9D9',
+    yellow: '#F6CE16',
 
 }
