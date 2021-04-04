@@ -5,7 +5,7 @@ import AppHeader from './components/AppHeader'
 import netlifyIdentity from 'netlify-identity-widget'
 import api from './utils/api'
 import {
-  HashRouter as Router,
+  BrowserRouter as Router,
   Route,
   Switch,
   Redirect
