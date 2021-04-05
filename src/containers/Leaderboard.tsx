@@ -11,7 +11,7 @@ import { styled } from '@material-ui/core/styles';
 import theme from '../theme/themed'
 
 const StyledLeaderboard = styled('div')({
-  width: '100%',
+  width: '60%',
   fontFamily: fonts.main,
 })
 
