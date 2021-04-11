@@ -91,7 +91,7 @@ export const Leaderboard: React.FC = () => {
   
   useEffect(() => {
     if (athletes.length === 0) {
-      api.readAllAthletes().then((athletes) => {
+      api.readAthletes().then((athletes) => {
         if (athletes.message === 'unauthorized') {
           if (isLocalHost()) {
             alert('FaunaDB key is not authorized. Make sure you set it in terminal session where you ran `npm start`. Visit http://bit.ly/set-fauna-key for more info')
@@ -108,7 +108,7 @@ export const Leaderboard: React.FC = () => {
 
   useEffect(() => {
     if (activities.length === 0 && lazyAthletes?.length === 0) {
-      api.readAll().then((activities) => {
+      api.readActivities().then((activities) => {
         setActivities(activities.data)
         setIsLoading(false)
       })
