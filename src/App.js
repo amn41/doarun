@@ -5,7 +5,7 @@ import AppHeader from './components/AppHeader'
 import netlifyIdentity from 'netlify-identity-widget'
 import api from './utils/api'
 import {
-  BrowserRouter as Router,
+  HashRouter as Router,
   Route,
   Switch,
   Redirect
@@ -25,7 +25,7 @@ function PrivateRoute({ component: Component, isAuthenticated, ...rest }) {
         ) : (
           <Redirect
             to={{
-              pathname: '/',
+              pathname: '/profile',
               state: { from: props.location }
             }}
           />
@@ -40,69 +40,41 @@ export default class App extends Component {
   state = {
     isAuthenticated: netlifyIdentity.currentUser() != null,
     user: netlifyIdentity.currentUser(),
-    profile: null,
-    groups: null,
-    jwt: null,
+    profile: null
   }
   constructor(props) {
     super(props);
     this.authenticate = this.authenticate.bind(this);
     this.signout = this.signout.bind(this);
-    this.updateGroups = this.updateGroups.bind(this);
   } 
   authenticate() {
     netlifyIdentity.open();
     netlifyIdentity.on('login', user => {
-       user.jwt().then((jwt) => {
-         return api.readGroups(jwt)
-       }).then((groups) => {
-    	 this.setState({
-    	   groups: groups,
-           isAuthenticated: true,
-           user: user
-         })
-       })      
-    })
+      this.setState({
+        isAuthenticated: true,
+        user: user
+      })
+    });
   }
   signout() {
     netlifyIdentity.logout();
     netlifyIdentity.on('logout', () => {
       this.setState({
         isAuthenticated: false,
-        user: null,
-        groups: null
+        user: null
       })
     });
-  }
-  updateGroups() {
-    const { jwt } = this.state
-    api.readGroups(jwt)
-    .then((groups) => {
-    	 this.setState({
-    	   groups: groups
-       })
-    })
   }
   componentDidMount() {
     const { user } = this.state
     if (user) {
        user.jwt().then((jwt) => {
-         this.setState({
-           jwt: jwt
-         })
-         return Promise.all([api.readProfile(jwt), jwt])
-       }).then(([profile, jwt]) => {
+         return api.readProfile(jwt)
+       }).then((profile) => {
     	 this.setState({
     	   profile: profile
          })
-         return (jwt)
-       }).then((jwt) => {
-         return api.readGroups(jwt)
-       }).then((groups) => {
-    	 this.setState({
-    	   groups: groups
-         })
-       })
+       }) 
        .catch((error) => console.error(error))
     }
   }
@@ -112,11 +84,9 @@ export default class App extends Component {
           <Router>
             <AppHeader profile={this.state.profile} />
             <Switch>
-              <PrivateRoute exact path="/:groupId" isAuthenticated={this.state.isAuthenticated}>
-                <Leaderboard groups={this.state.groups} jwt={this.state.jwt} />
-              </PrivateRoute>
-              <Route path="/" >
-                <Profile isAuthenticated={this.state.isAuthenticated} user={this.state.user} groups={this.state.groups} profile={this.state.profile} authenticate={this.authenticate} updateGroups={this.updateGroups} signout={this.signout} />
+              <PrivateRoute exact path="/" component={Leaderboard} isAuthenticated={this.state.isAuthenticated} />
+              <Route path="/profile" >
+                <Profile isAuthenticated={this.state.isAuthenticated} user={this.state.user} profile={this.state.profile} authenticate={this.authenticate} signout={this.signout} />
               </Route>
             </Switch>
           </Router>
